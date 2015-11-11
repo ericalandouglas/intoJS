@@ -180,3 +180,27 @@ MYAPP.pascalTri = function () {
     alert(getPascalTri(5));
 };
 
+MYAPP.modulePattern = function () {
+    var serialMaker = function () {
+        var prefix = ''; // only accessible inside this function scope (private to instantiated serial maker objects)
+        var seq = 0; // only accessible inside this function scope (private to instantiated serial maker objects)
+        return {
+            setPrefix: function (p) {
+                prefix = String(p);
+            },
+            setSeq: function (s) {
+                seq = s;
+            },
+            gensym: function () {
+                var result = prefix + seq;
+                seq += 1;
+                return result;
+            }
+        };
+    };
+
+    mySerialMaker = serialMaker();
+    mySerialMaker.setPrefix('cat');
+    mySerialMaker.setSeq(55);
+    alert(mySerialMaker.gensym() + " " + mySerialMaker.gensym());
+};

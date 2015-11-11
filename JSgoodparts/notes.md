@@ -79,3 +79,6 @@ Functions
 - Exception handler catch block can examine the name property of the exception object to check the type of error thrown
 - Augment basic types by providing new methods to prototype, methods with prototype in their chain can access the newly defined method, Function.prototype.method = function () {…};
 - Recursion is not tail call optimized, can refer to x or y as the recursive function in body when writing var x = function y () {…};
+- FILL IN ANY OTHER NOTES TAKEN.....!!!!!!!!!!!
+
+- Use the module pattern to create objects with protected variables and public methods, create a collection of functions acting as capabilities that grant specific actions to the protected state
