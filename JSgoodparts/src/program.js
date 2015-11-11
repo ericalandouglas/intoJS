@@ -151,7 +151,7 @@ MYAPP.pascalTri = function () { // some rambda practice
         var memo = [];
         return function calcp (rnum, cnum) {
             var resultRow = memo[rnum];
-            if (typeof('resultRow') !== 'object') {
+            if (!R.isArrayLike(resultRow)) {
                 resultRow = [];
                 memo[rnum] = resultRow;
             }
