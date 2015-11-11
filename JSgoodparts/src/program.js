@@ -148,7 +148,7 @@ MYAPP.pascalTri = function () { // some rambda practice
         return calcPascalNum(rowNum - 1, colNum) + calcPascalNum(rowNum - 1, colNum - 1);
     };
     var memoPascalCalc = function () { // memoized pascal calculation
-        var memo = [[1], [1, 1]];
+        var memo = [];
         return function calcp (rnum, cnum) {
             var resultRow = memo[rnum];
             if (typeof('resultRow') !== 'object') {
