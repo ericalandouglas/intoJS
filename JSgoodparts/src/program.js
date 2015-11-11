@@ -8,7 +8,7 @@ Function.prototype.method = function (name, func) {
 
 var MYAPP = {}; // module's object for global linkage
 
-MYAPP.demo = function () {
+MYAPP.rambdaDemo = function () {
     var input = [1, 2, 3];
     var output = R.map(function (item) {return item * 4;})(input);
     alert(input + " - " + output + " ... " +  R.isArrayLike(output));
@@ -141,33 +141,47 @@ MYAPP.typeAugmentation = function () {
 };
 
 MYAPP.pascalTri = function () { // some rambda practice
-    var calcPascalNum = function (rowNum, colNum) {
+    var calcPascalNum = function (rowNum, colNum) { // naive pascal calculation
         if (rowNum < 2 || colNum == 0 || colNum == rowNum) {
             return 1;
         }
         return calcPascalNum(rowNum - 1, colNum) + calcPascalNum(rowNum - 1, colNum - 1);
     };
-    var zeroRange = R.range(0);
+    var memoPascalCalc = function () { // memoized pascal calculation
+        var memo = [[1], [1, 1]];
+        return function calcp (rnum, cnum) {
+            var resultRow = memo[rnum];
+            if (typeof('resultRow') !== 'object') {
+                resultRow = [];
+                memo[rnum] = resultRow;
+            }
+            var result = resultRow[cnum];
+            if (typeof(result) !== 'number') {
+                result = (cnum == 0 || cnum == rnum) ? 1 : calcp(rnum - 1, cnum) + calcp(rnum - 1, cnum - 1);
+                memo[rnum][cnum] = result;
+            }
+            return result;
+        };
+    }();
 
     var buildPascalRow = function (rowNum, maxRowNum) {
         var getCoords = R.map(function (colNum) {
             return [rowNum, colNum];
         });
         var getPascalCoords = R.map(function (coord) {
-            return [calcPascalNum(coord[0], coord[1]), coord[1]];
+            return [memoPascalCalc(coord[0], coord[1]), coord[1]];
         });
         var getString = R.reduce(function (accumString, pcoord) {
             return accumString + pcoord[0] + (pcoord[1] == rowNum ? "" : "_");
         })("");
         return function (rowNum, maxRowNum) {
             spaces = new Array(maxRowNum - (rowNum - 1)).join('_');
-            return spaces + R.pipe(zeroRange, getCoords, getPascalCoords, getString)(rowNum + 1) + spaces;
+            return spaces + R.pipe(R.range(0), getCoords, getPascalCoords, getString)(rowNum + 1) + spaces;
         }(rowNum, maxRowNum);
     };
-
     var getPascalTri = function (numRows) {
         return R.pipe(
-            zeroRange,
+            R.range(0),
             R.map(function (rowNum) {
                 return [rowNum, numRows - 1];
             }),
