@@ -86,3 +86,7 @@ Functions
 - Module: function or object that presents an interface but hides its state and implementation, use modules to mitigate use of global variables  
 - Module is a function that defines private variables and functions, and creates privlaged functions that can access the private members, priivalged function is stored or accessible
 - Use the module pattern to create objects with protected variables and public methods, create a collection of functions acting as capabilities that grant specific actions to the protected state
+- Methods that do not have a return value can return this to enable cascades, a cascade allows you to call many methods of an object in sequence in a single statement
+- Each methood in a cascade returns the object it manipulates to allow succinct calls of an object's methods i.e. myObj.color('red').size(9);
+- Cascading is very expressive and helps mitigate the tendency to try and make interfaces that try to do too much at once
+- Curry functions by producing a new function from an input and a function

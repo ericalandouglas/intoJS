@@ -270,3 +270,15 @@ MYAPP.modulePattern = function () {
     mySerialMaker.setSeq(55);
     alert(mySerialMaker.gensym() + " " + mySerialMaker.gensym());
 };
+
+MYAPP.curryExample = function () {
+    Function.method('mycurry', function () {
+        var slice = Array.prototype.slice, args = slice.apply(arguments), that = this;
+        return function () {
+            return that.apply(null, args.concat(slice.apply(arguments)));
+        };
+    });
+
+    var add9 = function (a, b) {return a + b;}.mycurry(9);
+    alert(add9(1));
+};
