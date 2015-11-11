@@ -281,3 +281,37 @@ MYAPP.curryExample = function () {
     var add9 = function (a, b) {return a + b;}.mycurry(9);
     alert(add9(1));
 };
+
+MYAPP.memoizationExample = function () {
+    var fibMemo = function () {
+        var memo = [0, 1];
+        return function fib (n) {
+            var result = memo[n];
+            if (typeof(result) !== 'number') {
+                result = fib(n - 1) + fib(n - 2);
+                memo[n] = result;
+            }
+            return result;
+        };
+    }();
+
+    var memoizer = function (memo, formula) {
+        return function recur (n) {
+            var result = memo[n];
+            if (typeof(result) !== 'number') {
+                result = formula(recur, n);
+                memo[n] = result;
+            }
+            return result;
+        };
+    };
+
+    var newFib = memoizer([0, 1], function (recur, n) {
+        return recur(n - 1) + recur(n - 2);
+    });
+    var newFact = memoizer([1], function (recur, n) {
+        return n * recur(n - 1);
+    });
+
+    alert(fibMemo(10) + " " + fibMemo(7) + " " + newFib(5) + " "  + newFact(4));
+};

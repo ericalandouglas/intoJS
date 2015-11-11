@@ -90,3 +90,5 @@ Functions
 - Each methood in a cascade returns the object it manipulates to allow succinct calls of an object's methods i.e. myObj.color('red').size(9);
 - Cascading is very expressive and helps mitigate the tendency to try and make interfaces that try to do too much at once
 - Curry functions by producing a new function from an input and a function
+- Memoization: Optimization technique where functions save and recall previous calculations with the help of closures to avoid extra work (naive fib function can be memoized)
+- 
