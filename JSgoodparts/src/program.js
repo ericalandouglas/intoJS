@@ -101,7 +101,7 @@ MYAPP.exceptionExample = function () {
 MYAPP.recursiveExample = function () {
     var fib = function innerFib (n) { // fib and innerFib both refer to the recursive function and each can be used to call recursively
         return n < 2 ? n : fib(n - 1) + innerFib(n - 2); // both recursive calls can be fib or both can be innerFib
-    };
+    }; // can't refer to innerFib outside recurive functionscope
 
     var hanoiOutputter = function (x) {
         var hanoi = function (disc, src, aux, dst, accum) {
@@ -140,7 +140,7 @@ MYAPP.typeAugmentation = function () {
     alert((-10 / 3).myinteger() + " " + "   Trimmed    ".mytrim());
 };
 
-MYAPP.pascalTri = function () {
+MYAPP.pascalTri = function () { // some rambda practice
     var calcPascalNum = function (rowNum, colNum) {
         if (rowNum < 2 || colNum == 0 || colNum == rowNum) {
             return 1;
@@ -181,7 +181,7 @@ MYAPP.pascalTri = function () {
 };
 
 MYAPP.scopeExample = function () {
-    var foo = function () {
+    (function () { // parans needed around function to make call to anonymous function
         var a = 3, b = 5;
         var bar = function () {
             var b = 7, c = 11;
@@ -189,8 +189,7 @@ MYAPP.scopeExample = function () {
         };
         bar();
         alert(a);
-    };
-    foo();
+    }());
 };
 
 MYAPP.closureProtectionExample = function () {
