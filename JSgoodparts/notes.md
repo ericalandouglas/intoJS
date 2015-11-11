@@ -79,6 +79,10 @@ Functions
 - Exception handler catch block can examine the name property of the exception object to check the type of error thrown
 - Augment basic types by providing new methods to prototype, methods with prototype in their chain can access the newly defined method, Function.prototype.method = function () {…};
 - Recursion is not tail call optimized, can refer to x or y as the recursive function in body when writing var x = function y () {…};
-- FILL IN ANY OTHER NOTES TAKEN.....!!!!!!!!!!!
-
+- JS has function scope (not block scope) so its best practice to declare variables at the beginning of your functions
+- Closures enjoy access to variables declared in their enclosing scope including when the enclosing scope goes out of context
+- Avoid creating helper functions in loops, use helper functions defined outside the loop to bind variables like the iterator i
+- Use call back functions to be executed by asynchronous requests, avoid synchronous requests
+- Module: function or object that presents an interface but hides its state and implementation, use modules to mitigate use of global variables  
+- Module is a function that defines private variables and functions, and creates privlaged functions that can access the private members, priivalged function is stored or accessible
 - Use the module pattern to create objects with protected variables and public methods, create a collection of functions acting as capabilities that grant specific actions to the protected state

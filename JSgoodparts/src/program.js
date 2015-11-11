@@ -180,6 +180,72 @@ MYAPP.pascalTri = function () {
     alert(getPascalTri(5));
 };
 
+MYAPP.scopeExample = function () {
+    var foo = function () {
+        var a = 3, b = 5;
+        var bar = function () {
+            var b = 7, c = 11;
+            a += b + c; // a = 21, b = 7, c = 11
+        };
+        bar();
+        alert(a);
+    };
+    foo();
+};
+
+MYAPP.closureProtectionExample = function () {
+    var myObject = function () {
+        var value = 0;
+        return {
+            increment: function (inc) {
+                value += typeof(inc) === 'number' ? inc : 1;
+            },
+            getValue: function () {
+                return value;
+            }
+        };
+    }();
+
+    var quo = function (status) { // lowercase q, so as not to be used with the new prefix
+        return {
+            getStatus: function () {
+                return status;
+            }
+        };
+    };
+
+    myQuo = quo('amazed'); // no new prefix
+    myObject.increment(3);
+    myObject.increment('snoop');
+    alert(myObject.getValue() + " " + myQuo.getStatus());
+};
+
+MYAPP.callbackExample = function () {
+    req = prepare_the_request();
+    res = send_async_request(req, function (res) { // use call backs to help handle asynchonicity
+        display(res);
+    });
+};
+
+MYAPP.stringAugment = function () {
+    String.method('deentityify', function () {
+        var entity = { // only visible to the deentityify method
+            quo: '"',
+            lt: '<',
+            gt: '>'
+        };
+
+        return function () {
+            return this.replace(/&([^&;]+);/g, function (a, b) {
+                var r = entity[b];
+                return typeof(r) === 'string' ? r : a;
+            });
+        }.apply(this);
+    });
+
+    alert("&lt;&quo;&gt;".deentityify());
+};
+
 MYAPP.modulePattern = function () {
     var serialMaker = function () {
         var prefix = ''; // only accessible inside this function scope (private to instantiated serial maker objects)
