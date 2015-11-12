@@ -329,3 +329,62 @@ MYAPP.memoizationExample = function () {
 
     alert(fibMemo(10) + " " + fibMemo(7) + " " + newFib(5) + " "  + newFact(4));
 };
+
+MYAPP.inheritanceExample = function () {
+    Function.method('new', function () {
+        var that = Object.beget(this); // new object that inherits from constructor's prototype
+        var other = this.apply(that, arguments); // invoke constructor, bind this to the new object
+        return (typeof(other) === 'object' && object) || that; // return object if its an object else substitute it with new object
+    });
+
+    var Mammal = function (name) {
+        this.name = name;
+    };
+    Mammal.prototype.getName = function () {
+        return this.name;
+    };
+    Mammal.prototype.says = function () {
+        return this.saying || '';
+    };
+
+    var Cat = function (name) {
+        this.name = name;
+        this.saying = 'meow';
+    };
+    Cat.prototype = new Mammal(); // replace Cat prototype with new instance of Mammal
+    Cat.prototype.getName = function () {
+        return this.says() + " " + this.name + " " + this.says();
+    };
+
+    var Objmaker = function () {this.a = 'first';}; // a is first initialized on new
+    Objmaker.prototype.b = 'second'; // then b is inheriteed into the new object's private [[prototype]], this can not be modified once the object is created, this is searched when a property can't be found on an object
+
+    SubObjmaker = function () {}; // initializes the empty object {} on new
+    SubObjmaker.prototype = new Objmaker(); // set prototype to new Objmaker object, this captures properties first and second into the private [[prototype]]
+    SubObjmaker.prototype.c = 'third';
+    var obj2 = new SubObjmaker();
+
+    Function.method('inherits', function (Parent) {
+        this.prototype = new Parent();
+        return this;
+    });
+    Function.prototype.method = function (name, func) {
+        this.prototype[name] = func; // turn off defensive check for inheritance example
+        return this;
+    };
+
+    var Cat2 = function (name) { // cascade to pass this along as it is initialized and constructed
+        this.name = name;
+        this.saying = 'meow';
+    }.
+    inherits(Mammal).
+    method('getName', // getName overwritten
+        function () {
+            return this.says() + " " + this.name + " "  + this.says();
+        }
+    );
+
+    var myCat = new Cat("Rob");
+    var myCat2 = new Cat2("Thelma");
+    alert(myCat.getName() + " " + obj2.a + " " + obj2.b + " " + obj2.c + " " + myCat2.getName());
+};

@@ -94,4 +94,11 @@ Functions
 
 Inheritance
 -----------
-
+- JS is loosely typed so never type casts, lineage of an object doesn't matter
+- what matters about an object is what it can do, not what it descended from
+- JS is a prototypal language, objects inherit directly from other objects
+- When function object is created function constructor runs code like: this.prototype = {constructor: this}; the returned function object has a new property prototype which is the new function object
+- The prototype object is the place where inherited traits are deposited
+- Every function gets a prototype object because JS can't determine which functions are to be used as constructors
+- Forgetting to call new on a function meant to be constructor (denoted with as a title - initial capital i.e. new Dog();) will bind the global object to this which will then be augmented with any properties this has set in the function
+- It can be wise to avoid using the new keyword at all, JS isn't constrained to classical class inheritance/hierarchies because of its loose typing, JS has multiple (better) options 
