@@ -101,4 +101,6 @@ Inheritance
 - The prototype object is the place where inherited traits are deposited
 - Every function gets a prototype object because JS can't determine which functions are to be used as constructors
 - Forgetting to call new on a function meant to be constructor (denoted with as a title - initial capital i.e. new Dog();) will bind the global object to this which will then be augmented with any properties this has set in the function
-- It can be wise to avoid using the new keyword at all, JS isn't constrained to classical class inheritance/hierarchies because of its loose typing, JS has multiple (better) options 
+- It can be wise to avoid using the new keyword at all, JS isn't constrained to classical class inheritance/hierarchies because of its loose typing, JS has multiple (better) options
+- Pass along objects to makers to safely specify params without worrying about order i.e. func({xs: [1,2,3], isEmpty: false});
+- When passing along objects as function parameters we get added support for JSON objects and data when the JSON object is used as input 
