@@ -103,4 +103,11 @@ Inheritance
 - Forgetting to call new on a function meant to be constructor (denoted with as a title - initial capital i.e. new Dog();) will bind the global object to this which will then be augmented with any properties this has set in the function
 - It can be wise to avoid using the new keyword at all, JS isn't constrained to classical class inheritance/hierarchies because of its loose typing, JS has multiple (better) options
 - Pass along objects to makers to safely specify params without worrying about order i.e. func({xs: [1,2,3], isEmpty: false});
-- When passing along objects as function parameters we get added support for JSON objects and data when the JSON object is used as input 
+- When passing along objects as function parameters we get added support for JSON objects and data when the JSON object is used as input
+- In purely prototypal inheritance pattern classes are dispensed with, new objects inherit properties driectly from old objects
+- Prototypyal inheritance patterns thus far have not offered privacyy of variables and functions, functional inheritance can help by incorporating the module pattern
+- The functional pattern uses functions that create and return new objects (so the functions begin witha  lower case and don't require the use of the new keyword)
+- The functions contain 4 steps: 1. create a new object (multiple ways to do so) 2. Optionally defines private members of the function using var 3. Augments object with new methods that enjoy privileged access to the private vars defined 4. Return the new object
+- It is beneficial to declare all functions as var even when assigned as a public method i.e. var sayHi = function () {...}; obj.sayHi = sayHi;
+- When private or public functions use other functions in this context it is safe to use the variable function instead of an object property to eb sure tampering with public properties does not break the functionality of other methods (because they use the protected var functions)
+

@@ -388,3 +388,67 @@ MYAPP.inheritanceExample = function () {
     var myCat2 = new Cat2("Thelma");
     alert(myCat.getName() + " " + obj2.a + " " + obj2.b + " " + obj2.c + " " + myCat2.getName());
 };
+
+MYAPP.prototypalPattern = function () {
+    var myMammal = {
+        name: "Herb",
+        getName: function () {
+            return this.name;
+        },
+        says: function () {
+            return this.saying || '';
+        }
+    };
+
+    var myCat = Object.create(myMammal); // differential inheritance: we are specifying differences between cat and mammal with object customization
+    myCat.name = "Molly";
+    myCat.saying = "meow";
+    myCat.getName = function () {
+        return this.says() + " " + this.name + " " + this.says();
+    };
+
+    alert(myCat.getName());
+};
+
+MYAPP.functionalPattern = function () {
+
+    /* GENERAL PATTERN
+    input
+        spec: value or container holding all data to create a new object (that initialization)
+        my: container of secrets shared and potentially augmented along the inheritance chain as an object is constructed
+    output
+        that: the newly constructed object
+    var constructor = function (spec, my) {
+        var that, ... other private members, my = my || {}; // my is a container of secrets that can be shared by the inheritance chain
+        // add shared variables and functiosn to my
+        var that = NEW OBJECT; // create a new object using data from spec as necessary, perhaps by calling another constructor and passing along my which can be augmented by the called constructor
+        // add privileged methods to that as a public interface
+        return that;
+    };
+    */
+
+    // Mammal example doesn't need a my parameter
+    var mammal = function (spec) {
+        var that = {};
+        that.getName = function () {
+            return spec.name;
+        };
+        that.says = function () {
+            return spec.saying || '';
+        };
+        return that;
+    };
+
+    var cat = function (spec) {
+        spec.saying = spec.saying || 'meow';
+        var that = mammal(spec);
+        that.getName = function () {
+            return this.says() + " " + spec.name + " " + this.says();
+        };
+        return that;
+    };
+
+    var myCat = cat({name: 'Amanda'});
+    alert(myCat.getName());
+
+};
