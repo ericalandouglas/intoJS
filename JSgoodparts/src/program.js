@@ -489,7 +489,7 @@ MYAPP.functionalPattern = function () {
 };
 
 MYAPP.partsPattern = function () {
-    var eventuality = function (that) {
+    var eventuality = function (that) { // function to augment objects with parts (methods)
         var registry = {};
 
         that.fire = function (event) { // fire an event on an object, event is a event name string or object with type property containing name of event
