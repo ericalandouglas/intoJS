@@ -110,4 +110,10 @@ Inheritance
 - The functions contain 4 steps: 1. create a new object (multiple ways to do so) 2. Optionally defines private members of the function using var 3. Augments object with new methods that enjoy privileged access to the private vars defined 4. Return the new object
 - It is beneficial to declare all functions as var even when assigned as a public method i.e. var sayHi = function () {...}; obj.sayHi = sayHi;
 - When private or public functions use other functions in this context it is safe to use the variable function instead of an object property to eb sure tampering with public properties does not break the functionality of other methods (because they use the protected var functions)
+- Objects created in the functional pattern that do not have functions acting on this or that are durable
+- Durable: An object that is just a colledction of functions that serve as capabilities
+ - In the parts pattern functions are created that when called with an object as input augment the object with extra methods for event processing, etc.
+ - JS loosing typing gives benefit of not worrying about class lineages and instead focuses on the character of the parts (the object's contents)
 
+ Arrays
+ ------

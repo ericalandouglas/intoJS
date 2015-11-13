@@ -418,6 +418,7 @@ MYAPP.functionalPattern = function () {
         my: container of secrets shared and potentially augmented along the inheritance chain as an object is constructed
     output
         that: the newly constructed object
+
     var constructor = function (spec, my) {
         var that, ... other private members, my = my || {}; // my is a container of secrets that can be shared by the inheritance chain
         // add shared variables and functiosn to my
@@ -439,16 +440,97 @@ MYAPP.functionalPattern = function () {
         return that;
     };
 
-    var cat = function (spec) {
+    var cat = function (spec, my) {
         spec.saying = spec.saying || 'meow';
         var that = mammal(spec);
+
+        my = my || {};
+        spec.ending = spec.ending || 'purr';
+        my.addEnding = function (isExcited) { // can be shared in the inheritance chain
+            return " " + spec.ending + (isExcited ? "!" : "");
+        };
+
+        that.saysN = function (n) {
+            return function helper (accumStr, x) {
+                return x === 0 ? accumStr : helper(accumStr + (x === n ? "" : "-") + that.says(), x - 1);
+            }("", n);
+        };
         that.getName = function () {
-            return this.says() + " " + spec.name + " " + this.says();
+            return that.says() + " " + spec.name + " " + that.says();
         };
         return that;
     };
 
-    var myCat = cat({name: 'Amanda'});
-    alert(myCat.getName());
+    Object.method('superior', function (name) { // allow objects to create super methods
+        var that = this, method = this[name];
+        return function () {
+            return method.apply(that, arguments); // apply the super method with that as context passing along any arguments
+        };
+    });
 
+    var coolcat = function (spec, my) {
+        my = my || {};
+        var that = cat(spec, my);
+
+        var superGetName = that.superior('getName'); // create a super method
+        var superSaysN = that.superior('saysN'); //create another
+
+        that.getName = function () {
+            return 'like ' + superGetName() + ' baby';
+        };
+        that.saysN = function (n) {
+            return superSaysN(n) + my.addEnding(true); // cat function call augmented my with an addEnding method
+        };
+        return that;
+    };
+
+    var myCoolCat = coolcat({name: 'Jacobi'});
+    alert(myCoolCat.saysN(3) + ", " + myCoolCat.getName());
+};
+
+MYAPP.partsPattern = function () {
+    var eventuality = function (that) {
+        var registry = {};
+
+        that.fire = function (event) { // fire an event on an object, event is a event name string or object with type property containing name of event
+            var array, func, handler, i, type = typeof(event) === 'string' ? event : event.type;
+            // handlers registered by the 'on' method that match event name will be invoked
+            if (registry.hasOwnProperty(type)) { // if an array of handlers exist for this event type
+                array = registry[type]; 
+
+                for (i = 0; i < array.length; i += 1) { // loop through the handlers, executing in order
+                    handler = array[i]; // handler is an object with a method and optional array of params
+                    func = handler.method;
+
+                    if (typeof(handler) === 'string')  { // if method is a name look up function
+                        func = this[func];
+                    }
+                    func.apply(this, handler.parameters || [event]); // invoke handler method, passing it handlers params or event object
+                }
+            }
+            return this;
+        };
+
+        that.on = function (type, method, parameters) { // Register an event handler
+            var handler = { // create handler object
+                method: method,
+                parameters: parameters
+            };
+
+            if (registry.hasOwnProperty(type)) { // if registry has event type
+                registry[type].push(handler); // add handler to list of event type's handlers
+            } else {
+                registry[type] = [handler]; // otherwise create a new list of handlers
+            }
+            return this;
+        };
+
+        return that;
+    };
+
+    var myObj = eventuality({name: "dope"});
+    myObj.on("speak", function (s1, s2) {
+        alert("shiz " + this.name + s1 + s2);
+    }, [" yo", " doe"]) // the handler's method accepts 2 parameters passed along here
+    .fire({type: "speak"}); // we can chain calls because on and fire return the object
 };
