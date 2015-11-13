@@ -163,6 +163,9 @@ MYAPP.pascalTri = function () { // some rambda practice
             return result;
         };
     }();
+    var rambdaPascalCalc = R.memoize(function calcp (rnum, cnum) {
+        return (cnum == 0 || cnum == rnum) ? 1 : calcp(rnum - 1, cnum) + calcp(rnum - 1, cnum - 1);
+    });
 
     var buildPascalRow = function (rowNum, maxRowNum) {
         var getCoords = R.map(function (colNum) {
