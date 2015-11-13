@@ -529,7 +529,7 @@ MYAPP.partsPattern = function () {
     };
 
     var myObj = eventuality({name: "dope"});
-    myObj.on("speak", function (s1, s2) {
+    myObj.on("speak", function (s1, s2) { // creates a new event handler array in the private registry object for events of type speak
         alert("shiz " + this.name + s1 + s2);
     }, [" yo", " doe"]) // the handler's method accepts 2 parameters passed along here
     .fire({type: "speak"}); // we can chain calls because on and fire return the object
