@@ -112,8 +112,13 @@ Inheritance
 - When private or public functions use other functions in this context it is safe to use the variable function instead of an object property to eb sure tampering with public properties does not break the functionality of other methods (because they use the protected var functions)
 - Objects created in the functional pattern that do not have functions acting on this or that are durable
 - Durable: An object that is just a colledction of functions that serve as capabilities
- - In the parts pattern functions are created that when called with an object as input augment the object with extra methods for event processing, etc.
- - JS loosing typing gives benefit of not worrying about class lineages and instead focuses on the character of the parts (the object's contents)
+- In the parts pattern functions are created that when called with an object as input augment the object with extra methods for event processing, etc.
+- JS loosing typing gives benefit of not worrying about class lineages and instead focuses on the character of the parts (the object's contents)
 
- Arrays
- ------
+Arrays
+------
+- Classical Array: linear allocation of memory, elements accessed by integers that are used to compute offsets in memory, can be fast
+- JS Array: object with array-like properties, converts array subscripts into strings that are used as properties i.e. 1 = > array['1'], slower then classical array but can be more convenient
+- Retrieving and updating array properties works the same as any other JS object, special support for integer property names, many useful built-in methods
+- literal format available i.e. var xs = [1, 2, 3];
+

@@ -163,7 +163,7 @@ MYAPP.pascalTri = function () { // some rambda practice
             return result;
         };
     }();
-    var rambdaPascalCalc = R.memoize(function calcp (rnum, cnum) {
+    var rambdaPascalCalc = R.memoize(function calcp (rnum, cnum) { // cache's by creating a key from toString(arguments) where arguments is the implicit parameter list that is always passed to functions
         return (cnum == 0 || cnum == rnum) ? 1 : calcp(rnum - 1, cnum) + calcp(rnum - 1, cnum - 1);
     });
 
@@ -340,7 +340,7 @@ MYAPP.inheritanceExample = function () {
         return (typeof(other) === 'object' && object) || that; // return object if its an object else substitute it with new object
     });
 
-    var Mammal = function (name) {
+    var Mammal = function (name) { // Mammal constructor
         this.name = name;
     };
     Mammal.prototype.getName = function () {
@@ -365,7 +365,6 @@ MYAPP.inheritanceExample = function () {
     SubObjmaker = function () {}; // initializes the empty object {} on new
     SubObjmaker.prototype = new Objmaker(); // set prototype to new Objmaker object, this captures properties first and second into the private [[prototype]]
     SubObjmaker.prototype.c = 'third';
-    var obj2 = new SubObjmaker();
 
     Function.method('inherits', function (Parent) {
         this.prototype = new Parent();
@@ -379,14 +378,15 @@ MYAPP.inheritanceExample = function () {
     var Cat2 = function (name) { // cascade to pass this along as it is initialized and constructed
         this.name = name;
         this.saying = 'meow';
-    }.
-    inherits(Mammal).
-    method('getName', // getName overwritten
+    }
+    .inherits(Mammal)
+    .method('getName', // getName overwritten
         function () {
             return this.says() + " " + this.name + " "  + this.says();
         }
     );
 
+    var obj2 = new SubObjmaker();
     var myCat = new Cat("Rob");
     var myCat2 = new Cat2("Thelma");
     alert(myCat.getName() + " " + obj2.a + " " + obj2.b + " " + obj2.c + " " + myCat2.getName());
@@ -531,9 +531,12 @@ MYAPP.partsPattern = function () {
         return that;
     };
 
-    var myObj = eventuality({name: "dope"});
-    myObj.on("speak", function (s1, s2) { // creates a new event handler array in the private registry object for events of type speak
-        alert("shiz " + this.name + s1 + s2);
-    }, [" yo", " doe"]) // the handler's method accepts 2 parameters passed along here
+    var myObj = eventuality({name: "Dope"});
+    myObj.on("speak", function (lastName) { // creates a new event handler array in the private registry object for events of type speak
+        this.fullName = this.fullName || (this.name + " " + lastName);
+    }, ["Jones"])
+    .on("speak", function (startStr, endStr) { // adds a new event handler to the array (initilaized by above on) for speak events in the private registry object
+        alert(startStr + "shiz " + this.fullName + endStr);
+    }, ["Yo ", " doe"]) // the handler's method accepts 2 parameters passed along here
     .fire({type: "speak"}); // we can chain calls because on and fire return the object
 };
