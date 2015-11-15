@@ -120,5 +120,18 @@ Arrays
 - Classical Array: linear allocation of memory, elements accessed by integers that are used to compute offsets in memory, can be fast
 - JS Array: object with array-like properties, converts array subscripts into strings that are used as properties i.e. 1 = > array['1'], slower then classical array but can be more convenient
 - Retrieving and updating array properties works the same as any other JS object, special support for integer property names, many useful built-in methods
-- literal format available i.e. var xs = [1, 2, 3];
-
+- literal format available i.e. var xs = [1, 2, 3]; and inherit from Array.prototype where as an objetc dfeined like an array has less coapabilities inherenting from Object.prototype (no length property, etc.)
+- Elements in a JS array can be a iax of type i.e. va xs = ["apple", 1, {name: "cat"}]; is a valid array expression
+- length property is equal to the lsrgest integer property for an array plus 1 i.e. var as = []; as[1000] = 1; as.length; // length is 1001, as has 1 integer property, 1000
+- the [] postfix subscript operator converts its expression to a string using toString, string is used as property name
+- a string looking like a postive integer greating then or equal to current length property will set legnth to the new subscript + 1
+- length can be explicitly modified, increasing the legnth's value does not allocate more space, decreasing size below the current property count deletes properties with a subscript greater then or equal to the new length
+- splice and delete are available to remove elements from the array with splice replacing the indexs it removes, delete leaves the index blank
+- avoid using for...in enumeration on arrays as order of properties is not guaranteed, use the conventional for (i=0; i<array.length; i++) {} C like enumeration
+- when property names are small sequential integers use an array, otherwise use an object
+- JS typeof function reports type 'object' for array values, use helper method to make better distinctions between objects and arrays
+- set of methods provided that act on arrays live in Array.prototype, like Object.prototype it can be augmented
+- adding a property like 'total' to an array is not an integer property and so does not modify the array object's length property
+- it is not useful to constrcut arrays with the Object.create method as the array object will inherit from Object.prototype and not Array.prototype missing properties such as length
+- JS arrays do not prefill array indices with elements, accessing uninitialized elements will return undefined, use helper method to initialize array and its elements appropriately
+- JS supports matrix's and multi indexes i.e. xs[2][1], provide a matrix method (including identityMatrix) to Array for easy matrix construction

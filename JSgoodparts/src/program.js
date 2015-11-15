@@ -540,3 +540,77 @@ MYAPP.partsPattern = function () {
     }, ["Yo ", " doe"]) // the handler's method accepts 2 parameters passed along here
     .fire({type: "speak"}); // we can chain calls because on and fire return the object
 };
+
+MYAPP.arrayExample = function () {
+    
+    var empty = []; // inherits from Array.prototype
+    var numbersObject = { // inherits from Object.prototype
+        '0': 'zero', '1': 'one', '2': 'two'
+    };
+    var misc = ["apples", -7, {name: "frank"}]; // elements can be any type
+
+    var myArray = [];
+    myArray[1000] = 1;
+    var xs = [1, 2, 3];
+    xs.length = 2; // delete's 3
+    xs[xs.length] = 3; // add it back (can also use push method)
+
+    var numbers = [1, 2, 3, 4];
+    numbers.splice(2, 1); // delete's elements starting at 2 removing a totl of 1 and filling in the new blank index 2 with 4
+
+    var isArray = function(xs) {
+         return xs && typeof(xs) === 'object' && xs.constructor === Array;
+    };
+    var isArrayDiffFrame = function (xs) {
+        return Object.prototype.toString.apply(xs) === '[object Array]';
+    };
+
+    Array.method('reduce', function(f, value) { // augment array prototype
+        var i;
+        for (i = 0; i < this.length; i += 1) {
+            value = f(value, this[i]);
+        }
+        return value;
+    });
+    numbers.product = function () { // methods can be added to array objects, properties can be strings aside from integers
+         return this.reduce(function (z, n) {return z * n;}, 1);
+    };
+
+    Array.dim = function (dimension, initial) {
+        var a = [], i;
+        for (i = 0; i < dimension; i += 1) {
+            a[i] = initial;
+        }
+        return a;
+    };
+    var myZeros = Array.dim(10, 0); // array of 10 0's is initialized
+
+    Array.matrix = function (rowNums, colNums, initial) { // construct array matrices
+        var rowIndex, colIndex, m = [];
+        for (rowIndex = 0; rowIndex < rowNums; rowIndex += 1) {
+            m[rowIndex] = []; // init the row
+            for (colIndex = 0; colIndex < colNums; colIndex += 1) {
+                m[rowIndex][colIndex] = initial;
+            }
+        }
+        return m;
+    };
+    Array.identityMatrix = function (n) {
+        var oneIndex, mat = Array.matrix(n, n, 0);
+        for (oneIndex = 0; oneIndex < n; oneIndex += 1) {
+            mat[oneIndex][oneIndex] = 1;
+        }
+        return mat;
+    };
+    var myMat = Array.identityMatrix(4);
+    /* myMat = [
+        [1, 0, 0, 0],
+        [0, 1, 0, 0],
+        [0, 0, 1, 0],
+        [0, 0, 0, 1]
+    ]; */
+
+    alert(xs[1] + " " + empty[0] + " " + numbersObject.length + " "+ myArray.length + " " + // empty[0] == numbers_obejcts.length = undefined
+          xs[2] + " " + numbers[2] + " " + isArray(numbers) + " " + isArrayDiffFrame(numbersObject) + " " + 
+          numbers.reduce(function(z, n) {return z + n;}, 0) + " " + numbers.product() + " " + myMat[3][3]); // numbers = [1, 2, 4], sum = 7, product = 8
+};
