@@ -182,4 +182,11 @@ Regular Expressions
   2. noncapturing - ?:(), has ?: prefix, simply matches and is not captured, does not interrupt numbering of capture groups
   3. positive lookahead - ?=(), has ?= prefix, like noncapturing but text is rewound to start of group on match, a bad part of JS
   4. negative lookahead - ?!(), has ?! prefix, matches when positive lookahead group fails a match (inverse), also not a good part of JS
+- regexp class is a convenient way to specify a set of characters i.e. vowel character class = [aeiou], [!-\/] is character class for ascii characters between ! and  /
+- character classes can be negated, [^...] is a compliment character class i.e. [^aeiou] matches all consonants (negated vowel class)
+- escapement rules in regex class differ from regex factor, [\s] is the white space character class (don't need to escape \s), special characters that should be escaped in classes are -, /, \, [, ], ^
+- regex factors can have regex quantifiers which denote how many times a regex factor may match, /www/ = /w{3}/, /w{3,}/ matches 3 or more w's, * matches 0 or more times = {0,}, + matches 1 or more times = {1,}, ? matches 0 or 1 times = {0, 1}
+
+Methods
+-------
 
