@@ -173,5 +173,9 @@ Regular Expressions
 - regexp sequences contain one or more regexp factors, factors can be followed by a quantifier (*, +) that determines how many times the factor can appear, if no quantifier is specified factor is matched once
 - a regexp factor is a character, a paranthesized group, a character class, or escape sequence, all characters are literal except for /, \, [, ], {, }, (, ), ?, +, *, |, ., ^, $, must be escaped, \ to be used literally, \ prefix does nit make letters or digits literal
 - unescaped . matches all characters except a line-ending character, unescaped ^ matches beginning of textwhen lastIndex = 0, can match line ending chracaters when m flag is specified, unescaped $ matches end of text, also match line ending characters when m is flagged
-- 
+- backslash character \ indicates a regexp escape sequence, \f is formfeed character, \n is new-line, \r is carriage return, \t is tab, \u is used to specify unicode character as 16 bit hex constant
+- \d is same as [0-9] matching digits, \D is opposite as [^0-9], matching non digits, \s is white space scharacters, \S is non white space characters, \w is same as [0-9A-Z_a-z] matching words while \W matches non words, it is best to specify own regexp class to match specific characters of interest as \w is very general
+- JS regular expressions provide poor support for internationilzation (very slow when using huge sets of characters in character classes i.e. all unicode)
+- \1 references first text captured by group 1 in matching i.e. var doubleWords = /([A-Z_a-z)+]\s+\1/gi; matches words like "cats cats", \2 can reference group 2 matched, \3 is the 3rd group, etc.
+- regexp group...
 
