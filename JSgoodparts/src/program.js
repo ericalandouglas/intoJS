@@ -142,7 +142,7 @@ MYAPP.typeAugmentation = function () {
 
 MYAPP.pascalTri = function () { // some rambda practice
     var calcPascalNum = function (rowNum, colNum) { // naive pascal calculation
-        if (rowNum < 2 || colNum == 0 || colNum == rowNum) {
+        if (rowNum < 2 || colNum === 0 || colNum === rowNum) {
             return 1;
         }
         return calcPascalNum(rowNum - 1, colNum) + calcPascalNum(rowNum - 1, colNum - 1);
@@ -157,41 +157,33 @@ MYAPP.pascalTri = function () { // some rambda practice
             }
             var result = resultRow[cnum];
             if (typeof(result) !== 'number') {
-                result = (cnum == 0 || cnum == rnum) ? 1 : calcp(rnum - 1, cnum) + calcp(rnum - 1, cnum - 1);
+                result = (cnum === 0 || cnum === rnum) ? 1 : calcp(rnum - 1, cnum) + calcp(rnum - 1, cnum - 1);
                 memo[rnum][cnum] = result;
             }
             return result;
         };
     }();
-    var rambdaPascalCalc = R.memoize(function calcp (rnum, cnum) { // cache's by creating a key from toString(arguments) where arguments is the implicit parameter list that is always passed to functions
-        return (cnum == 0 || cnum == rnum) ? 1 : calcp(rnum - 1, cnum) + calcp(rnum - 1, cnum - 1);
+    var rambdaPascalCalc = R.memoize(function calcp (rnum, cnum) { // cache's by creating a key from arguments.toString() where arguments is the implicit parameter list that is always passed to functions
+        return (cnum === 0 || cnum === rnum) ? 1 : calcp(rnum - 1, cnum) + calcp(rnum - 1, cnum - 1);
     });
 
     var buildPascalRow = function (rowNum, maxRowNum) {
         var getCoords = R.map(function (colNum) {
             return [rowNum, colNum];
         });
-        var getPascalCoords = R.map(function (coord) {
-            return [memoPascalCalc(coord[0], coord[1]), coord[1]];
+        var getPascalNum = R.map(function (coord) {
+            return memoPascalCalc(coord[0], coord[1]);
         });
-        var getString = R.reduce(function (accumString, pcoord) {
-            return accumString + pcoord[0] + (pcoord[1] == rowNum ? "" : "_");
-        })("");
-        return function (rowNum, maxRowNum) {
-            spaces = new Array(maxRowNum - (rowNum - 1)).join('_');
-            return spaces + R.pipe(R.range(0), getCoords, getPascalCoords, getString)(rowNum + 1) + spaces;
-        }(rowNum, maxRowNum);
+        var spaces = new Array(maxRowNum - (rowNum - 1));
+        return spaces.concat(R.pipe(R.range(0), getCoords, getPascalNum)(rowNum + 1), spaces).join('_');
     };
     var getPascalTri = function (numRows) {
         return R.pipe(
             R.range(0),
             R.map(function (rowNum) {
-                return [rowNum, numRows - 1];
-            }),
-            R.reduce(function (accumString, rowInput) {
-                return accumString + buildPascalRow(rowInput[0], rowInput[1]) + (rowInput[0] == rowInput[1] ? "" : "\n");
-            })("")
-        )(numRows);
+                return buildPascalRow(rowNum, numRows - 1);
+            })
+        )(numRows).join("\n");
     };
 
     alert(getPascalTri(5));
@@ -622,9 +614,9 @@ MYAPP.regexExample = function () {
 
     var names = ['url', 'scheme', 'slash', 'host', 'port', 'path', 'query', 'hash'] ;
     var blanks = '          ';
-    var parsedUrlString = R.reduce(function (accumStr, i) {
-        return accumStr + names[i] + ":" + blanks.substring(names[i].length) + results[i] + ((i == names.length - 1) ? "" : "\n");
-    })("", R.range(0, names.length));
+    var parsedUrlString = R.map(function (i) {
+        return names[i] + ":" + blanks.substring(names[i].length) + results[i];
+    })(R.range(0, names.length)).join("\n");
 
     var parseNum = /^(-?)(\d+)(?:(\.\d*))?(?:e([+\-]?\d+))?$/i; // regex for parsing number strings, i flag means character match is case insensitive
     var parseNumTest = function (num) {
