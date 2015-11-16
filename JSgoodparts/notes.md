@@ -169,5 +169,9 @@ Regular Expressions
 - regex objects can also be created using the RegExp constructor i.e. RegExp("\"(?:\\\\.|[^\\\\\\\"])*\"", 'g') to match any string "...", \\\ = '\', first input is regex pattern, second are any regex flags
 - regexp object properties: global (true if g was flagged), ignoreCase (true if i was flagged), multiLine (true if m was flagged), lastIndex (index at which to start next exec match, initially 0), source (source text of the regular expression)
 - RegExp objects made by regular expression literals share one instance i.e. function makeRegex (foo) {return /a/gi;} x = makeRegex(); y = makeRegex(); x.lastIndex = 10, now y.lastIndex = 10, x === y
-
+- regexp choice contains one or more regexp sequences, sequences are seperated by |, choice matches if any of the sequences match, attempts to match each sequence in order i.e. "into".match(/in|int/) matches with in, not int
+- regexp sequences contain one or more regexp factors, factors can be followed by a quantifier (*, +) that determines how many times the factor can appear, if no quantifier is specified factor is matched once
+- a regexp factor is a character, a paranthesized group, a character class, or escape sequence, all characters are literal except for /, \, [, ], {, }, (, ), ?, +, *, |, ., ^, $, must be escaped, \ to be used literally, \ prefix does nit make letters or digits literal
+- unescaped . matches all characters except a line-ending character, unescaped ^ matches beginning of textwhen lastIndex = 0, can match line ending chracaters when m flag is specified, unescaped $ matches end of text, also match line ending characters when m is flagged
+- 
 
