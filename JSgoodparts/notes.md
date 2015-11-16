@@ -178,8 +178,8 @@ Regular Expressions
 - JS regular expressions provide poor support for internationilzation (very slow when using huge sets of characters in character classes i.e. all unicode)
 - \1 references first text captured by group 1 in matching i.e. var doubleWords = /([A-Z_a-z)+]\s+\1/gi; matches words like "cats cats", \2 can reference group 2 matched, \3 is the 3rd group, etc.
 - 4 kinds of regex groups:
-1. capturing - (), regex choice wrapped in parantheses, characters matching group are captured, first capturing group is numbered 1
-2. noncapturing - ?:(), has ?: prefix, simply matches and is not captured, does not interrupt numbering of capture groups
-3. positive lookahead - ?=(), has ?= prefix, like noncapturing but text is rewound to start of group on match, a bad part of JS
-4. negative lookahead - ?!(), has ?! prefix, matches when positive lookahead group fails a match (inverse), also not a good part of JS
+  1. capturing - (), regex choice wrapped in parantheses, characters matching group are captured, first capturing group is numbered 1
+  2. noncapturing - ?:(), has ?: prefix, simply matches and is not captured, does not interrupt numbering of capture groups
+  3. positive lookahead - ?=(), has ?= prefix, like noncapturing but text is rewound to start of group on match, a bad part of JS
+  4. negative lookahead - ?!(), has ?! prefix, matches when positive lookahead group fails a match (inverse), also not a good part of JS
 
