@@ -616,15 +616,22 @@ MYAPP.arrayExample = function () {
 };
 
 MYAPP.regexExample = function () {
-    var parse_url = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/; // regex for parsing URLs
-    var url = "http://www.google.com:80/images?q#fragment";
-    var results = parse_url.exec(url); // create an array of the regex parts extracted
+    var parseUrl = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/; // regex for parsing URLs
+    var url = "http://www.google.com:80/images?q#fluent";
+    var results = parseUrl.exec(url); // create an array of the regex parts extracted
 
     var names = ['url', 'scheme', 'slash', 'host', 'port', 'path', 'query', 'hash'] ;
     var blanks = '          ';
-
-    var parsed_url_string = R.reduce(function (accumStr, i) {
+    var parsedUrlString = R.reduce(function (accumStr, i) {
         return accumStr + names[i] + ":" + blanks.substring(names[i].length) + results[i] + ((i == names.length - 1) ? "" : "\n");
-    })("", R.range(0, names.length))
-    alert(parsed_url_string);
+    })("", R.range(0, names.length));
+
+    var parseNum = /^(-?)(\d+)(?:(\.\d*))?(?:e([+\-]?\d+))?$/i; // regex for parsing number strings, i flag means character match is case insensitive
+    var parseNumTest = function (num) {
+        return parseNum.test(num);
+    };
+
+    var parseString = /"(?:\\.|[^\\\"])*"/g; // g flag means match pattern multiple times
+
+    alert(parsedUrlString + "\n" + parseNum.exec('-55.44E-22') + " " + parseNumTest('55.44D-22') + " " + parseString.test('"..\'dog\"g\^ie" "doc\-riv."'));
 };

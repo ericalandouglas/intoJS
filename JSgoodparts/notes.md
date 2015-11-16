@@ -143,4 +143,31 @@ Regular Expressions
 - Methods with regex support include: regexp.exec, regexp.test, string.match, string.replace, string.search, string.split
 - Regex in JS can have significant performance advantage over other equivalent string operations
 - JS regular expressions do not allow comments or white space
+- parsed url regex = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/
+- ^ indicates the beginning of a string, prevents exec from skipping over a non URL-like prefix
+- (?:([A-Za-z]+):)? - (?:...) is a noncapturing group 1, the scheme, must be followed by a :, ending ? means match is optional and means repeat 0 or 1 time
+- A capturing group copies text it matches and places it into the results array, first capturing group is 1 so it lives in results[1], full string being matched lives in results[0]
+- [...] indicates a character class, characters A-Za-z contain the 26 upper and lower case letters of the alphabet, hyphens indicate ranges, + means character class can be matched 1 or more times
+- [A-Za-z]+ means 1 or more characters of the upper and lower case alphabet letters
+- the ending colon is matched literally, (?:([A-Za-z]+):)
+- (\/{0,3}) is capturing group 2, the slash field, \/ indicates a slash, / should be matched, \, backslash is the escape character, {0,3} means match / 0-3 times
+- ([0-9.\-A-Za-z]+) is caputring group 3, the host (results[3]), [0-9.\-A-Za-z]+ character class matches any upper lower case alphabet letter, digit, . and -, \- was used to escape -, matches 1 or more times ([...]+)
+- (?::(\d+))? is capturing group 4, optional (terminating ?) port number match, :(\d+) noncapturing group means : followed by 1 or more digits, \d denotes any digit
+- (?:\/([^?#]*))? is capturing group 5, optional path match, \/([^?#]*) noncapturing group begins with / (\/), has character class [^?#] which matches all characters except ? and #, and is repeated zero or more times (ending *, [...]*)
+- (?:\?([^#]*))? is capturing group 6, optional query match, \?([^#]*) uses character class to match zero or more characters where the character is not #, ? precedes the characters (\?)
+- (?:#(.*))? is the final and 7th capturing group, optional hash match, #(.*) noncaputring group begins with # followed by zero or more of any character except line end (\n), . matches all characters except new line
+- $ represents the end of hte string, assures us there is no extra material at the end of the url
+- it is better to use more short and simple regular expressions as complexitly can explode rapidly as longer regex is used, harder to modify
+- regular expressions that are complicated or convulted can have portability problems, ested regular expressions can suffer horrible performance, simplicity is best strategy
+- the test method on regex objects can verify if a string conforms to the regex pattern defined, if it returns false it does not report on where the mimsmatching occurred
+- regex to parse numbers = /^-?\d+(?:\.\d*)?(?:e[+\-]?\d+)?$/i
+- /^ $/i like the url matcher uses ^ and $ to anchor the string, all characters in the text are matched to teh regular expression, with the anchors the pattern tells us if a string contains only a number, ^ without $ matches string starting with a number, including only $ at the end matches strings ending in a number, i flag causes case to be ignored when matching characters (e or E)
+- conversily instead of using i we could also have done [Ee] or (?:E|e) because e is the only character in number strings
+- optional minus sign = -?, one or more digits = /d+, optional . followed by zero or more digits = (?:\.\d*)?, optional exponent e (optionla + or -) followed by one or more digit = (?:e[+\-]?\d+)?
+- preferred way to create regex objects is with literal notation i.e. /.../[gim], (optionsl g, i, m flags)
+- g flag is global, match multiple times (precise meaning varies by method), i flag is insensitive, ignore character case, m flag is multiline, ^ and $ can matchline-ending characters
+- regex objects can also be created using the RegExp constructor i.e. RegExp("\"(?:\\\\.|[^\\\\\\\"])*\"", 'g') to match any string "...", \\\ = '\', first input is regex pattern, second are any regex flags
+- regexp object properties: global (true if g was flagged), ignoreCase (true if i was flagged), multiLine (true if m was flagged), lastIndex (index at which to start next exec match, initially 0), source (source text of the regular expression)
+- RegExp objects made by regular expression literals share one instance i.e. function makeRegex (foo) {return /a/gi;} x = makeRegex(); y = makeRegex(); x.lastIndex = 10, now y.lastIndex = 10, x === y
+
 
