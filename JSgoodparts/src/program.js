@@ -550,18 +550,18 @@ MYAPP.arrayExample = function () {
     var misc = ["apples", -7, {name: "frank"}]; // elements can be any type
 
     var myArray = [];
-    myArray[1000] = 1;
+    myArray[1000] = 1; // sets myArray.length property = 1000 + 1
     var xs = [1, 2, 3];
     xs.length = 2; // delete's 3
     xs[xs.length] = 3; // add it back (can also use push method)
 
     var numbers = [1, 2, 3, 4];
-    numbers.splice(2, 1); // delete's elements starting at 2 removing a totl of 1 and filling in the new blank index 2 with 4
+    numbers.splice(2, 1); // delete's elements starting at 2 removing a total of 1 and filling in the new blank index 2 with 4
 
     var isArray = function(xs) {
          return xs && typeof(xs) === 'object' && xs.constructor === Array;
     };
-    var isArrayDiffFrame = function (xs) {
+    var isArrayDiffFrame = function (xs) { // check array's not in same window/frame
         return Object.prototype.toString.apply(xs) === '[object Array]';
     };
 
@@ -576,7 +576,7 @@ MYAPP.arrayExample = function () {
          return this.reduce(function (z, n) {return z * n;}, 1);
     };
 
-    Array.dim = function (dimension, initial) {
+    Array.dim = function (dimension, initial) { // new Array constructor method, only accessible by the Array object (not Array instances)
         var a = [], i;
         for (i = 0; i < dimension; i += 1) {
             a[i] = initial;
@@ -595,7 +595,7 @@ MYAPP.arrayExample = function () {
         }
         return m;
     };
-    Array.identityMatrix = function (n) {
+    Array.identityMatrix = function (n) { // identity constructor (as a new Array method, instances of Array do not inherit identityMatrix)
         var oneIndex, mat = Array.matrix(n, n, 0);
         for (oneIndex = 0; oneIndex < n; oneIndex += 1) {
             mat[oneIndex][oneIndex] = 1;
@@ -610,7 +610,21 @@ MYAPP.arrayExample = function () {
         [0, 0, 0, 1]
     ]; */
 
-    alert(xs[1] + " " + empty[0] + " " + numbersObject.length + " "+ myArray.length + " " + // empty[0] == numbers_obejcts.length = undefined
+    alert(xs[1] + " " + empty[0] + " " + numbersObject.length + " "+ myArray.length + " " + // empty[0] = numbers_obejcts.length = undefined
           xs[2] + " " + numbers[2] + " " + isArray(numbers) + " " + isArrayDiffFrame(numbersObject) + " " + 
           numbers.reduce(function(z, n) {return z + n;}, 0) + " " + numbers.product() + " " + myMat[3][3]); // numbers = [1, 2, 4], sum = 7, product = 8
+};
+
+MYAPP.regexExample = function () {
+    var parse_url = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/; // regex for parsing URLs
+    var url = "http://www.google.com:80/images?q#fragment";
+    var results = parse_url.exec(url); // create an array of the regex parts extracted
+
+    var names = ['url', 'scheme', 'slash', 'host', 'port', 'path', 'query', 'hash'] ;
+    var blanks = '          ';
+
+    var parsed_url_string = R.reduce(function (accumStr, i) {
+        return accumStr + names[i] + ":" + blanks.substring(names[i].length) + results[i] + ((i == names.length - 1) ? "" : "\n");
+    })("", R.range(0, names.length))
+    alert(parsed_url_string);
 };

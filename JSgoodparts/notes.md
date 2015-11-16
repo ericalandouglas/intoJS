@@ -135,3 +135,12 @@ Arrays
 - it is not useful to constrcut arrays with the Object.create method as the array object will inherit from Object.prototype and not Array.prototype missing properties such as length
 - JS arrays do not prefill array indices with elements, accessing uninitialized elements will return undefined, use helper method to initialize array and its elements appropriately
 - JS supports matrix's and multi indexes i.e. xs[2][1], provide a matrix method (including identityMatrix) to Array for easy matrix construction
+
+Regular Expressions
+-------------------
+- JS borrowed syntax from Java, functions from Scheme, prototypal inheritance from Self, and regular expressions from Perl
+- regular expression: the specification of teh syntax of a simple language, used with methods to search, replace and extract info from strings
+- Methods with regex support include: regexp.exec, regexp.test, string.match, string.replace, string.search, string.split
+- Regex in JS can have significant performance advantage over other equivalent string operations
+- JS regular expressions do not allow comments or white space
+
