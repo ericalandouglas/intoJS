@@ -605,6 +605,7 @@ MYAPP.arrayExample = function () {
     alert(xs[1] + " " + empty[0] + " " + numbersObject.length + " "+ myArray.length + " " + // empty[0] = numbers_obejcts.length = undefined
           xs[2] + " " + numbers[2] + " " + isArray(numbers) + " " + isArrayDiffFrame(numbersObject) + " " + 
           numbers.reduce(function(z, n) {return z + n;}, 0) + " " + numbers.product() + " " + myMat[3][3]); // numbers = [1, 2, 4], sum = 7, product = 8
+          
 };
 
 MYAPP.regexExample = function () {
@@ -626,4 +627,30 @@ MYAPP.regexExample = function () {
     var parseString = /"(?:\\.|[^\\\"])*"/g; // g flag means match pattern multiple times
 
     alert(parsedUrlString + "\n" + parseNum.exec('-55.44E-22') + " " + parseNumTest('55.44D-22') + " " + parseString.test('"..\'dog\"g\^ie" "doc\-riv."'));
+};
+
+MYAPP.methodImplementation = function () {
+
+    Array.method('myUnshift', function () { // implement unshift
+        this.splice.apply( // grab array splice method for application
+            this, // apply on current array instance context
+            [0, 0].concat(Array.prototype.slice.apply(arguments, [0])) // pass splice (0, 0, item...), places item... at begining of this, without deleting elements
+        );
+        return this.length;
+    });
+
+    Function.method('bind', function (that) { // bind method creates a function that will call the this function as though it was a method on that
+        var method = this, slice = Array.prototype.slice, args = slice.apply(arguments, [1]); // grab all args that aren't the that param (first passed in)
+        return function () {
+            return method.apply(that, args.concat(slice.apply(arguments, [0]))); // call method on the that passing original and any new params (args + arguments)
+        };
+    });
+
+    var xs = [1,2,3];
+    var bindFunc = function () {
+        return this.value;
+    }.bind({value: "slop"});
+
+    alert("len = " + xs.myUnshift(4,5) + ", xs = " + xs + ", " + bindFunc() + " " + // pushes 4,5 at beginning of xs
+          bindFunc.hasOwnProperty('bind')); // hasOwnProperty doesn't examine prototype chain
 };

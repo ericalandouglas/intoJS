@@ -190,6 +190,22 @@ Regular Expressions
 Methods
 -------
 - array.concat(items...): creates shallow copy of array with items appended to it, [1,2].concat([3,4], true) = [1,2,3,4,true]
-- array.join(sep):  creates a string from an array, interspersing sep between each stringified element, sep defaults to ',' i.e. [1, 2, 3].join() = "1,2,3"
-- array.pop(): 
+- array.join(sep): creates a string from an array, interspersing sep between each stringified element, sep defaults to ',' i.e. [1, 2, 3].join() = "1,2,3"
+- array.pop(): pop and push work like a stack, pop removes the last element from the array i.e. [1,2,3].pop() = 3, [].pop() = undefined
+- array.push(item...): appends item at the end of the array, returns the length of the new array i.e. [1,2].push(["App","bee"], true) returns 4, array becomes [1,2,["App","bee"],true]
+- array.reverse(): reverses the order of the elements, returns a shallow copy of the reversed array, [1,2,3].reverse() = [3,2,1]
+- array.shift(): removes the first element from the array and returns it, if array empty returns undefined, slower then pop, [1,2,3].shift() returns 1, array becomes [2,3], [].shift() = undefined
+- array.slice(start, end): makes a shallow copy of a portion of the array, starts copying at array[start], stops before copying array[end], end is optional, default = array.length, if start >= array.length result is new empty array, [1,2,3,4].slice(1,3) = [2,3], [1,2,3,4].slice(2) = [3,4]
+- array.sort(sortfn): sorts the contents of an array inplace, default sort function assumes elements are strings (default sorts numbers incorrectly), sortfn takes 2 params, x & y and returns 0 when x == y, -1 when x < y, 1 when x > y, [3,2,1].sort(function (x, y) {return x - y;}) = [1,2,3], sort is not stable and so equal elements may not maintain their relative position
+- array.splice(start, deleteCount, item...): removes elements fom the array replacing them with item..., deletes deleteCount elements starting at array[start], additional item.. is then inserted at array[start], returns array containing deleted elements, [1,2,3,4].splice(1,1,"hey","jude") returns [2], array becomes [1,"hey","jude",3,4]
+- array.unshift(item...): pushes item... onto the front of the array, returns arrays new length [1,2,3].push("oops",5) returns 5, array becomes ["oops",5,1,2,3]
+- function.apply(thisArg, argArray): apply method invokes the function, thisArg will be bound to the this context, can include an optional array of arguments, apply method is used in the invocation pattern
+- number.toExponential(fractionDigits): converts the number into a string in exponential form, optional fractionDigits (defualt = 15) controls the number of decimal places, Math.PI.toExponential(0) = "3e+0", Math.PI.toExponential(4) = "3.1416e+0"
+- number.toFixed(fractionDigits): converts the number into a string in decimal form, optional fractionDigits (defualt = 0) controls the number of decimal places, Math.PI.toFixed(7) = "3.1415927", Math.PI.toFixed() = "3"
+- number.toPrecision(precision): converts the number to string in decimal form, optional (default = 16) precision parameter constols the number of digits of precision, Math.PI.toPrecision(2) = 3.1, Math.PI.toPrecision() = 3.141592653589793
+- number.toString(radix): converts the number to a string, optional radix (default = 10) param controls base, num.toString() = String(num)
+- object.hasOwnProperty(name): returns true if the object contains a property having name, prototype chain is not examined (properties inherited by prototype i.e. Function.prototype.bind, function () {}.hasOwnProperty('bind') = false)
+- regexp.exec(string): most powerful and slow regexp method, if the string is matched it returns an array with the 0 element being the substring that matched the regexp, 1 element is text captured by group 1, etc., null is returned on match failure, when g flag used initial search index is regexp.lastIndex (initially 0), for looping and finding several matches in a string
+- regexp.test(string): simplest fastest regexp method, returns true if string matches the regexp pattern, false otherwise, do not use g flag with this method
+- string.charAt(pos): returns the character (as a string, JS lacks character type) at postion pos in the string, if pos < 0 or pos >= string.length returns empty string "", "Amber".charAt(0) = "A", "Cat".charAt(45) = ""
 
