@@ -189,5 +189,7 @@ Regular Expressions
 
 Methods
 -------
-- array.concat(items...): creates shallow copy of array with items appended to it, [1,2].concat([3,4], true) = [1,2,3,4,true];
-- array.join(sep):  
+- array.concat(items...): creates shallow copy of array with items appended to it, [1,2].concat([3,4], true) = [1,2,3,4,true]
+- array.join(sep):  creates a string from an array, interspersing sep between each stringified element, sep defaults to ',' i.e. [1, 2, 3].join() = "1,2,3"
+- array.pop(): 
+
