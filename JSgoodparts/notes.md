@@ -217,11 +217,34 @@ Methods
 - string.replace(searchValue, replaceValue): produces new string, searchValue can be string or regexp, when searchValue is a string only first match repaced, "mother-in-law".replace("-", "_") = "mother_in-law", regexp with g flag will replace all matches, replaceValue is a string or function, if string $ has special meaning, '$1' = capture and use group 1 text as replacement text, $& = the matched text, if replaceValue is function it produces a string, it is called on every match, first param is matched text, second is capture group 1, etc.
 - string.search(regexp): like indexOf, takes regexp instead of string, returns position of first character of first match if ther is one, -1 otherwise, g flag ignored, no position parameter
 - string.slice(start, end): makes a new string by copying portion of the string, if start < 0, start = start + string.length, end is optional (default = string.length), if end < 0, end = end + string.length, get n characters at position p = string.slice(p, p + n), "apollo".slice(-2) = "lo"
-- string.split(seperator, limit): creates array of strings by splitting the string into pieces, optional limit parameter limits the number of pieces that will be split, seperator can be string or regexp, if seperator = '' an array of characters is produced, otherwises searches for all occurences of seperator, "last,   middle,  first".split(/\s*,\s*/) = ["last", "middle", "first"], text from capturing groups () is included in the split array
+- string.split(seperator, limit): creates array of strings by splitting the string into pieces, optional limit parameter limits the number of pieces that will be split, seperator can be string or regexp, if seperator = '' an array of characters is produced, otherwises searches for all occurences of seperator, "last,   middle ,  first".split(/\s*,\s*/) = ["last", "middle", "first"], text from capturing groups () is included in the split array
 - string.substring(start, end): substring method is same as slice, doesn't adjust for negative params, always use slice instead
 - string.toLocalLowerCase(): creates new string by converting the string to lowercase using local rules
 - string.toLocalUpperCase(): creates new string by converting the string to uppercase using local rules
 - string.toLowerCase(): returns new string by converting the string to lowercase
 - string.toUpperCase(): returns new string by converting the string to uppercase
 - String.fromCharCode(char...): produces a string from a series of numbers, String.fromCharCode(67, 97, 116) = "Cat"
+
+Awful Parts
+-----------
+- global variables: required by JS for linkage, 3 ways to define
+  1. var outside function, at module scope
+  2. add property directly to the global object (window in browsers)
+  3. use a variable without declaring it (implied global), foo = value
+- scope: C-like syntax, but not block scoped liked C (variables declared in block not visible outside of block), declare variables at beginning of function because they will be visible everywhere inside function
+- semicolon insertion: JS can try and insert ; when missing, don't depend on this behavior
+- reserved words: most reserved words are not used, can't be variable or parameter names, when used as key's for objects properties, have to be quoted, they do not support dot notation
+- unicode: JS character's are 16 bits, don't support the 1,000,000+ unicode characters, unicode thinks pairs of characters are a single pair, JS thinks pair is two distinct characters
+- typeof: typeof(null) = 'object' not 'null', null test is my_val === null, check if type is object by my_val && typeof(myval) === 'object'
+- parseInt: converts string to integer stopping when it sees non digit, if first character is 0 string is evaluated in base 8 where 8 and 9 are non digits, parseInt("08") = 0, pass radix parameter for safety, parseInt("08", 10) = 8
+- +: adds or concats, if either operand is the empty string it produces other operand converted to a string, both numbers it returns the sum, otherwise converts both operands to strings and concats them
+- floating point: binary floating-point numbers inept at handling fractions, 0.1 + 0.2 != 0.3, integer arithmetic in floating point is exact i.e. convert dollars to cents by multiplying by 100 (produce integer), when done processing divide by 100 to get the proper floating point dollar amount
+- NaN: not a number, typeof(NaN) = 'number', produced when non number string converted to number, if NaN is an arithmetic operation the result is NaN, isNAN function can check for NaN, isFinite function rejects NaN and Infinity, attempts to convert operand to number
+- phony arrays: typeof operator does not distinguish between object and array, must lookat object prototypes toString value, the implicit arguments array parameter is not an array, it is an object with a length parameter
+- falsy values: 0, NaN, '', alse, null, undefined, undefined and NaN are constants, do not change them
+- hasOwnProperty: a method so in any object can be replaced with another value or function
+- object: objects are never truly empty (pick up members from the prototype chain), use method hasOwnProperty to inspect which methods truly belong to an object
+
+Bad Parts
+---------
 

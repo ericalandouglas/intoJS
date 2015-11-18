@@ -657,7 +657,7 @@ MYAPP.methodImplementation = function () {
         return function () { // this will be the string object because we're returning this closure to be the method
             return this.replace(/[<>&"]/g, function (c) { // use g flag to match and replace all occurences of character class
                 return character[c];
-            })
+            });
         };
     }()); // call outer function to return inner closure
 
