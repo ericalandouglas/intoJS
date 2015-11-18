@@ -208,4 +208,20 @@ Methods
 - regexp.exec(string): most powerful and slow regexp method, if the string is matched it returns an array with the 0 element being the substring that matched the regexp, 1 element is text captured by group 1, etc., null is returned on match failure, when g flag used initial search index is regexp.lastIndex (initially 0), for looping and finding several matches in a string
 - regexp.test(string): simplest fastest regexp method, returns true if string matches the regexp pattern, false otherwise, do not use g flag with this method
 - string.charAt(pos): returns the character (as a string, JS lacks character type) at postion pos in the string, if pos < 0 or pos >= string.length returns empty string "", "Amber".charAt(0) = "A", "Cat".charAt(45) = ""
+- string.charCodeAt(pos): returns integer representation of code point value of he cahracter at pos in the string, if pos < 0 or pos >= string.length method returns NaN
+- string.concat(otherString...): creates a new string by combining string and otherString..., the + operator is preferred for string concatentation
+- string.indexOf(searchString, position): searches for searchString within the string, if found returns the position of the first matched character, -1 otherwise, optional pos (default = 0) specifies what position to begin searching at in the string, 'Mississippi'.indexOf('ss', 3) = 5, 'Mississippi'.indexOf('ss', 6) = -1
+- string.lastIndexOf(searchString, pos): like indexOf method but searches from the end of the string, pos defaults to string.length, 'Mississippi'.lastIndexOf('ss', 3) = 2, 'Mississippi'.lastIndexOf('ss', 6) = 5
+- string.localCompare(that): comapres two strings (compare rules unspecified), if string < that returns -1, string == thatreturns 0, string > that returns 1
+- string.match(regexp): same as regexp.exec(string) when no g flag specified, if g is specified produces an array of all matches omitting capturing groups
+- string.replace(searchValue, replaceValue): produces new string, searchValue can be string or regexp, when searchValue is a string only first match repaced, "mother-in-law".replace("-", "_") = "mother_in-law", regexp with g flag will replace all matches, replaceValue is a string or function, if string $ has special meaning, '$1' = capture and use group 1 text as replacement text, $& = the matched text, if replaceValue is function it produces a string, it is called on every match, first param is matched text, second is capture group 1, etc.
+- string.search(regexp): like indexOf, takes regexp instead of string, returns position of first character of first match if ther is one, -1 otherwise, g flag ignored, no position parameter
+- string.slice(start, end): makes a new string by copying portion of the string, if start < 0, start = start + string.length, end is optional (default = string.length), if end < 0, end = end + string.length, get n characters at position p = string.slice(p, p + n), "apollo".slice(-2) = "lo"
+- string.split(seperator, limit): creates array of strings by splitting the string into pieces, optional limit parameter limits the number of pieces that will be split, seperator can be string or regexp, if seperator = '' an array of characters is produced, otherwises searches for all occurences of seperator, "last,   middle,  first".split(/\s*,\s*/) = ["last", "middle", "first"], text from capturing groups () is included in the split array
+- string.substring(start, end): substring method is same as slice, doesn't adjust for negative params, always use slice instead
+- string.toLocalLowerCase(): creates new string by converting the string to lowercase using local rules
+- string.toLocalUpperCase(): creates new string by converting the string to uppercase using local rules
+- string.toLowerCase(): returns new string by converting the string to lowercase
+- string.toUpperCase(): returns new string by converting the string to uppercase
+- String.fromCharCode(char...): produces a string from a series of numbers, String.fromCharCode(67, 97, 116) = "Cat"
 

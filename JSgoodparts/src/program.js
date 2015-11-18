@@ -174,7 +174,7 @@ MYAPP.pascalTri = function () { // some rambda practice
         var getPascalNum = R.map(function (coord) {
             return memoPascalCalc(coord[0], coord[1]);
         });
-        var spaces = new Array(maxRowNum - (rowNum - 1));
+        var spaces = new Array(maxRowNum - rowNum);
         return spaces.concat(R.pipe(R.range(0), getCoords, getPascalNum)(rowNum + 1), spaces).join('_');
     };
     var getPascalTri = function (numRows) {
@@ -646,11 +646,26 @@ MYAPP.methodImplementation = function () {
         };
     });
 
+    String.method('entitify', function () {
+        var character = {
+            '<': '&lt;',
+            '>': '&gt;',
+            '&': '&amp;',
+            '"': '&quot;'
+        };
+
+        return function () { // this will be the string object because we're returning this closure to be the method
+            return this.replace(/[<>&"]/g, function (c) { // use g flag to match and replace all occurences of character class
+                return character[c];
+            })
+        };
+    }()); // call outer function to return inner closure
+
     var xs = [1,2,3];
     var bindFunc = function () {
         return this.value;
     }.bind({value: "slop"});
 
     alert("len = " + xs.myUnshift(4,5) + ", xs = " + xs + ", " + bindFunc() + " " + // pushes 4,5 at beginning of xs
-          bindFunc.hasOwnProperty('bind')); // hasOwnProperty doesn't examine prototype chain
+          bindFunc.hasOwnProperty('bind') + " <&>".entitify()); // hasOwnProperty doesn't examine prototype chain
 };
