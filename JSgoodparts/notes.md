@@ -247,4 +247,15 @@ Awful Parts
 
 Bad Parts
 ---------
-
+- ==: JS has 2 sets of equality operators, {==, !=} and {===, !==}, === produces true when operands our of the same type and value and !== produces false, avoid == and !=, if operands are of different type the operators attempt type coerscions which can yield strange results
+- with statement: avoid using as it can produce four different statements (a = b, a = obj.b, obj.a = b, obj.a = obj.b) with unclear context and no confidence on which statement is produced in some cases
+- eval: execute string as a line of JS, hard to read, slows down code, compromises security, Function constructor is another form of eval and should be avoided, avoid string argument form when using setTimeout and setInterval
+- continue: jumps to the top of the loop, should be factored out
+- switch fall through: cases fall down into next case if not explicitly broken out of, useful but dangerous so avoid
+- blockless statement: if, while, for, do can take a block or single statement, use blocks to avoid obscuring program structure
+- ++,--: can create terse code that is to tight and tricky to understand
+- bitwise operators: &,|,^,~,>>,>>>,<<, JS converts its floating point representation of number to integer, operators aren't close to hardware like C, & may often be a mistyped &&
+- function statement vs function expression: function foo () {} = var foo = function () {}, functions are values, function statements are subject to hoisting like other vars, use var foo form
+- type wrappers: JS has a set, new Boolean(false), has method valueOf that returns wrapped value, don't use new Boolean, new Number, new String, use {} for objects, [] for arrays
+- new: JS new operator creates object that inherits from operand's prototype member, binds new object to this, forget new and this is bound to global object, so modifications may be made to that by accident, no compile or run time warning, capitalize first letter of functions which should be used with new i.e. constructors, avoid new if possible
+- void: takes argument and returns undefined, don't use
