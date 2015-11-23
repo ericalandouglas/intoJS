@@ -59,3 +59,7 @@ The Silence Review
 - compose without glue variables, point free when possible
 - often times thinking about performance optimizations and efficiencies is not needed, extra function calls are much cheaper when a web app is also communicating over a network
 - being very declarative keeps everything defined and designed at a high level, less focus on small implementation details
+
+The Voyage
+==========
+

@@ -1,0 +1,2 @@
+
+var VOYAGEAPP = {}; // module object
