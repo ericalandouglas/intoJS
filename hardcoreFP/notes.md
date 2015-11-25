@@ -63,3 +63,28 @@ The Silence Review
 The Voyage
 ==========
 
+Composition Review
+------------------
+- like all functional code, compositions should aim to read like a book i.e. compose(toUpper, firstChar)
+- point free functions, resusable parts/compositions don't care or root themselves in specific app data, easily interchangable, used to define and declare the grammar of your program in a straight forward manner
+
+Category Theory
+---------------
+- consider add function (take 2 inputs x and y, produce their sum, don't care about exact implementation details), add is associative, commutative, distributive, identity = 0
+- add is polymorphic and the properties of the function are well defined on all types (associative, commutative) which is really nice to have when writing and reasoning about code
+- like add compose has laws and properties, type signature = compose :: (b -> c) -> (a, b) -> (a -> c)
+- to form a category you need 1. a composition with the above type signature and 2. an identity with type signature = id :: a -> a i.e. var id = function (x) {return x;}
+- Category laws: 1. Left Identity, compose(id, f) == f 2. Right Identity, compose(f, id) == f 3. Associativity, compose(compose(f, g), h) == compose(f, compose(g, h)) == f(g(h(x)))
+- category theory and the laws and properties it grants can aid in developing programs (not a full necessity but good to know)
+
+Objects
+-------
+- objects are containers/wrappers for values, no methods, not nouns (User, Blog, etc.) -> looking to capture behavior, don't make your own too often
+- consider function capitalize, basically a standard function defined on the standard string type, how do we extend to wrappers/objects? i.e. capitalize("hello") => "Hello" vs. capitalize(Container("hello")) => Object/Wrapper
+
+Object Map
+----------
+- when mapping a function over a container it is first necessary to unpack the contained value, second pass it along to the mapping function, and finally construct a new wrapper with the new mapped value
+- offers support for dynamic dispatch where many different types of containers (lists, maybes, eithers, etc.) support the same operations (map, reduce, etc.)
+- container map: we have a container holding a value and we want to map a function over the container's value by running the function "inside the container" yielding a new container i.e. list container -> [1].map(add(2)) = [2]
+- Containers that support map operation have to be polymorphic containers (can hold any type of value)
