@@ -88,3 +88,19 @@ Object Map
 - offers support for dynamic dispatch where many different types of containers (lists, maybes, eithers, etc.) support the same operations (map, reduce, etc.)
 - container map: we have a container holding a value and we want to map a function over the container's value by running the function "inside the container" yielding a new container i.e. list container -> [1].map(add(2)) = [2]
 - Containers that support map operation have to be polymorphic containers (can hold any type of value)
+- it is encouraged to create functions that take containers/objects as the last argument so dot notation is not needed (abstracted) and point free composable style can be achieved
+
+Maybe Functor
+-------------
+- functor: any object or data structure you can map over
+- Maybe functor captures a null check (sometimes referred too as option with subclasses some or none)
+- can use Maybe in function composition because it is just a function that takes a value and creates an option container
+- Maybe can help protect against a null blowing up a chain of function calls
+
+Either Functor
+--------------
+- somewhat like Maybe, typically used for pure error handling with an error message embed
+- has 2 subclass functors: Right and Left, mapping over the Either functor maps the function when the class is of Right flavor, ignores mapping a function if subclass is Left flavor i.e. map(add(1), Right(1)) = Right(2), map(add(1), Left('error msg')) = Left('error msg')
+- If you want program to continue running return the Right subclass, if you want to stop computation and report an error return Left subclass
+- more useful for syncronous operations vs asyncronous
+

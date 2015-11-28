@@ -40,10 +40,109 @@ VOYAGEAPP.objectMapExample = function () {
     };
 
     var myCapitalize = function (s) {return s[0].toUpperCase() + s.slice(1)};
-    var flameWrapper = Container("flame");
+    var flameWrapper = Container("flame"); // Container can take strings, lists, ints, etc.
+
+    var myMap = R.curry(function (f, obj) { // general pattern to achieve point free style and greate composability
+        return obj.map(f);
+    });
+
     alert(
         flameWrapper.repr() + "\n" +
         flameWrapper.map(myCapitalize).repr() + "\n" +
-        Container([1,2,3]).map(R.reverse).map(R.head).repr() // Container can take strings, lists, ints, etc. // map chain is like a composition of maps i.e. map(compose(head, reverse))
+        Container([1,2,3]).map(R.reverse).map(R.head).repr() + "\n" + // map chain is like a composition of maps i.e. map(compose(head, reverse))
+        myMap(R.add(1), Container(-21)).repr() + " " + myMap(R.compose(R.head, R.reverse), Container("dog")).repr() // can curry myMap as myMap(add(1)), etc. without needing a container/object, more composable
+    );
+};
+
+VOYAGEAPP.maybeFunctorExample = function () {
+    var _Maybe = function (val) {this.val = val;};
+    var Maybe = function (x) {return new _Maybe(x);};
+    _Maybe.prototype.map = function (f) {
+        return this.val ? Maybe(f(this.val)) : Maybe(null);
+    };
+    _Maybe.prototype.repr = function (f) {
+        return ["val", this["val"] ? this["val"] : "null"].join(": ");
+    };
+
+    var myMap = R.curry(function (f, obj) {
+        return obj.map(f);
+    });
+
+    var firstMatch = R.compose(myMap(R.head), Maybe, R.match(/cat/g)); // can drop maybe into a compostion
+
+    alert(
+        myMap(R.split(' '), Maybe("Cat dog")).repr() + "\n" + // non null
+        myMap(R.add(2), Maybe(null)).repr() + ", " + firstMatch("soup").repr() // null
+    );
+};
+
+VOYAGEAPP.functorExercise = function () {
+    var myMap = R.curry(function (f, obj) {
+        return obj.map(f);
+    });
+    var _Identity = function (val) {this.val = val;};
+    var Identity = function (x) {return new _Identity(x);}; // identity helps LIFT regular data values into the functor world, compose with other functors
+    _Identity.prototype.repr = function (f) {
+        return ["val", this["val"]].join(": ");
+    };
+    _Identity.prototype.map = function (f) {
+        return Identity(f(this.val));
+    };
+
+    var ex1 = myMap(R.add(1));
+    var ex1Thing = myMap(function(x) {return x.toUpperCase();}); // x becomes the string held inside the identity container (x gets unwrapped and is used to create a new identity container)
+
+    var ex2 = myMap(R.head);
+
+    var _Maybe = function (val) {this.val = val;};
+    var Maybe = function (x) {return new _Maybe(x);};
+    _Maybe.prototype.map = function (f) {
+        return this.val ? Maybe(f(this.val)) : Maybe(null); // running f inside Maybe context (abstract out function application)
+    };
+    _Maybe.prototype.repr = function (f) {
+        return ["val", this["val"] ? this["val"] : "null"].join(": ");
+    };
+
+    var safeGet = R.curry(function (prop, o) { // safeGet returns the Maybe functor
+        return Maybe(o[prop]);
+    });
+    var ex3 = R.compose(myMap(R.head), safeGet("name")); // map head on Maybe functor returned by safeGet
+
+    var ex4 = R.compose(myMap(parseInt), Maybe); // parseInt with null check
+
+    alert(
+        ex1(Identity(2)).repr() + ", " + ex1Thing(Identity("firehose")).repr() + ", " + myMap(R.add(2), [2]) + "\n" + // exercise 1
+        ex2(Identity([1, 2, 3])).repr() + ", " + myMap(myMap(R.add(1)), Identity([3, 4])).repr() + "\n" + // Identity functor contains list functor, need double map to handle both functors
+        ex3({name: "Rick Sanchez"}).repr() + ", " + ex3({badName: "Morty Smith"}).repr() + "\n" +
+        ex4(33).repr() + ", " + ex4(null).repr() // parseInt can handle null now
+    );
+};
+
+VOYAGEAPP.eitherFunctorExample = function () {
+    var myMap = R.curry(function (f, obj) {
+        return obj.map(f);
+    });
+    var _Right = function (val) {this.val = val;};
+    var Right = function (x) {return new _Right(x);};
+    _Right.prototype.map = function (f) {
+        return Right(f(this.val))
+    };
+    _Right.prototype.repr = function (f) {
+        return ["val", this["val"]].join(": ");
+    };
+    var _Left = function (val) {this.val = val;};
+    var Left = function (errMsg) {return new _Left(errMsg);};
+    _Left.prototype.map = function (f) {
+        return this;
+    };
+    _Left.prototype.repr = _Right.prototype.repr;
+
+    var determineAge = function (user) {
+        return user.age ? Right(user.age) : Left("No age available");
+    };
+    var yearOlder = R.compose(myMap(R.add(1)), determineAge);
+
+    alert(
+        yearOlder({age: 3}).repr() + ", " + yearOlder({age: null}).repr()
     );
 };
