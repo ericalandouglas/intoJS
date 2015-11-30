@@ -325,3 +325,22 @@ VOYAGEAPP.functorLawsExample = function () {
     );
 };
 
+VOYAGEAPP.monadExample = function () {
+    var getTrackingId = R.compose(Maybe, R.get('tracking_id'));
+    var findOrder = R.compose(Maybe, Api.findOrder);
+    var getTrackingOrder = R.compose(mjoin, myMap(getTrackingId), findOrder); // findOrder and getTrackingId return a Maybe, use mjoin to flatten the nested maybe returned by myMap(getTrackingId)
+
+    var chain = function (f) { // (a -> M b) -> M a -> M b a.k.a. flatMap/bind
+        return R.compose(mjoin, myMap(f));
+    };
+    var mjoin = chain(id); // :: M M a -> M a, id returns original contained monad
+
+    var sendToServer = httpGet('/upload');
+    var uploadFromFile = R.compose(mjoin, myMap(sendToServer), readFile); // Future contained in a future before mjoin
+    var uploadFromFile2 = R.compose(mjoin, myMap(sendToServer), mjoin, myMap(readFile), askUser);
+    var uploadFromFileChained = R.compose(chain(sendToServer), chain(readFile), askUser);
+
+    // uploadFromFile("tmp/file.txt").fork(logErr, alertSuccess); // only have to fork once since the future's were joined/flattened
+    // uploadFromFile("What file?").fork(logErr, alertSuccess);
+
+};

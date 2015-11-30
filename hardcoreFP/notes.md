@@ -92,7 +92,7 @@ Object Map
 
 Maybe Functor
 -------------
-- functor: any object or data structure you can map over
+- functor: any object or data structure you can map over, map :: (a -> b) -> F a -> F b
 - Maybe functor captures a null check (sometimes referred too as option with subclasses some or none)
 - can use Maybe in function composition because it is just a function that takes a value and creates an option container
 - Maybe can help protect against a null blowing up a chain of function calls
@@ -136,3 +136,9 @@ Functor Laws & Properties
 
 Monads
 ------
+- of :: a -> F a (maps a to a container holding a), doesn't care about value of a, just places it in F context
+- anything with a map and of method is a pointed functor
+- monads are like nest computations, a monad is a pointed functor with mjoin :: M M a -> M a and/or chain :: (a -> M b) -> M a -> M b i.e. monad has map, of, and one or both of mjoin and chain (can define mjoin in terms of chain and vice versa)
+- mjoin(Container(Container(2))) = Container(2), like flattening a list
+- common to combine contexts and introduce nested Maybes, etc. use mjoin to keep the chain of Maybes flat and confined to a single Maybe instance
+
