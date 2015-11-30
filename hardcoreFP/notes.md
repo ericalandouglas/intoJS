@@ -104,3 +104,18 @@ Either Functor
 - If you want program to continue running return the Right subclass, if you want to stop computation and report an error return Left subclass
 - more useful for syncronous operations vs asyncronous
 
+IO
+--
+- IO is a functor, a container holding a function (composed function), a lazy computation builder, typically used to contain side effects
+- you must runIO to perform operation, map appends the function to a list of things to run with the effectful value
+- set up computation throughout the app, building up cpmputations, and finally executed with runIO at the end
+- IO functors can be composed inside other IO functors, would have to call runIO on the interior IO functor if we wanted to perform the operation (we will see monads solve this problem later)
+
+Other Functors
+--------------
+- Event Stream: infinite list of results, dual of array, map can be lazy, map is called on the functor each time an event occurs i.e. stream of mouse clicks on screen
+- can compose simpler event streams together to form more sophisticated infinite lists that are lazily mapped over, lazy until we subscribe to the event stream
+- Future: has eventual value, similar to promise but is lazy, must fork it to kick it off, takes a function as its value (like IO), calls function with its result once it is there
+- can build up future computations that only begin running once kicked off
+- fork expects two arguments when kicking off a future functor, a failure handler and a success handler to operate on the future value
+

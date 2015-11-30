@@ -125,7 +125,7 @@ VOYAGEAPP.eitherFunctorExample = function () {
     var _Right = function (val) {this.val = val;};
     var Right = function (x) {return new _Right(x);};
     _Right.prototype.map = function (f) {
-        return Right(f(this.val))
+        return Right(f(this.val));
     };
     _Right.prototype.repr = function (f) {
         return ["val", this["val"]].join(": ");
@@ -146,3 +146,152 @@ VOYAGEAPP.eitherFunctorExample = function () {
         yearOlder({age: 3}).repr() + ", " + yearOlder({age: null}).repr()
     );
 };
+
+VOYAGEAPP.ioFunctorExample = function () {
+	var myMap = R.curry(function (f, obj) {
+        return obj.map(f);
+    });
+
+    var emailIO = IO(function () {
+        return $('#email').val();
+    });
+    var msgIO = myMap(R.concat("welcome "), emailIO);
+    runIO(msgIO); // => "welcome steve@foodie.net"
+
+    var getBgColor = R.compose(get("background-color"), JSON.parse); // mapping function to be run over the contained value in IO functor
+    var bgPref = R.compose(myMap(getBgColor), Store.get("preferences")); // Store.get returns an IO functor, only kicked off with runIO
+    var app = bgPref(); // => returns an IO functor
+    runIO(app); // => runIO
+
+    var getValue = function (sel) {return $(sel).val();}.toIO(); // like emailIO but toIO is a helper that lets us pass arguments to contained function (sel in this example)
+
+};
+
+VOYAGEAPP.eitherIOExercise = function () {
+    var myMap = R.curry(function (f, obj) {
+        return obj.map(f);
+    });
+    var _Right = function (val) {this.val = val;};
+    var Right = function (x) {return new _Right(x);};
+    _Right.prototype.map = function (f) {
+        return Right(f(this.val));
+    };
+    _Right.prototype.repr = function (f) {
+        return ["val", this["val"]].join(": ");
+    };
+    var _Left = function (val) {this.val = val;};
+    var Left = function (errMsg) {return new _Left(errMsg);};
+    _Left.prototype.map = function (f) {
+        return this;
+    };
+    _Left.prototype.repr = _Right.prototype.repr;
+
+    var showWelcome = R.compose(R.add( "Welcome "), R.prop('name'));
+    var checkActive = function(user) { // user validation
+        return user.active ? Right(user) : Left('Your account is not active')
+    };
+    var ex1 = R.compose(myMap(showWelcome), checkActive);
+
+    var ex2 = function (xs) { // length validation
+        return R.length(xs) > 3 ? Right(xs) : Left("You need length > 3");
+    };
+
+    var save = function (user) {
+        console.log("User " + user + " saved!");
+        return user;
+    };
+    var ex3 = R.compose(myMap(save), ex2); // saves on valid user
+
+    /*****
+    var getValue = function (x) {
+        return document.querySelector(x).value;
+    }.toIO(); // IO functor containing getValue function
+    var stripSpaces = function (s) {return s.replace(/\s+/g, '');};
+    var ex4 = R.compose(myMap(stripSpaces), getValue); // strips spaces from good x values, have to call runIO on ex4 to get value
+
+    var getHref = function () {return location.href;}.toIO(); // IO functor for location href
+    var getProtocal = R.compose(R.head, R.split("/"));
+    var ex5 = R.compose(myMap(getProtocal), getHref); // have to call runIO on ex5 to get the value
+
+    var localStorage = {};
+    localStorage.user = JSON.stringify({email: "george@foreman.net"});
+
+    var _Maybe = function (val) {this.val = val;};
+    var Maybe = function (x) {return new _Maybe(x);};
+    _Maybe.prototype.map = function (f) {
+        return this.val ? Maybe(f(this.val)) : Maybe(null); // running f inside Maybe context (abstract out function application)
+    };
+    _Maybe.prototype.repr = function (f) {
+        return ["val", this["val"] ? this["val"] : "null"].join(": ");
+    };
+
+    var getCache = function(x){return Maybe(localStorage[x]);}.toIO(); // IO functor for getting user cache safely
+    var log = function (x) {
+    	console.log(x);
+    	return x;
+    };
+    var getStringEmail = R.compose(R.prop('email'), JSON.parse); // get email out of JSON string in cache
+    var ex6 = R.compose(myMap(myMap(getStringEmail)), getCache); // have to call runIO on ex6 to get Maybe value out of operation
+    *****/
+
+    alert(
+        ex1({active: true, name: "eric"}).repr() + ", " + ex1({active: false, name: "john"}).repr() + "\n" +
+        ex2([1]).repr() + ", " + ex2([1,2,3,4]).repr() + "\n" + 
+        ex3("eric").repr() + ", " + ex3("bob").repr()
+    );
+};
+
+VOYAGEAPP.otherFunctorExample = function () {
+    var myMap = R.curry(function (f, obj) {
+        return obj.map(f);
+    });
+
+    var clickStream = myMap(function (e) {console.log(e); return e.clientX + ", " + e.clientY;}, Bacon.fromEventTarget(document, "click")); // => EventStream string
+    var elementStream = myMap(document.querySelector, clickStream);
+    clickStream.onValue(function (loc) {alert('you clicked @ ' + loc);}); // kicks off stream processing
+    //elementStream.onValue(function (el) {alert('The inner HTML is ' + el.innerHTML);});
+
+    var makeHtml = function (post) {
+        return "<div>" + post.title + "</div>";
+    };
+    //var pageFuture = myMap(makeHtml, http.get("/posts/1"));
+    //pageFuture.fork(function (err) {throw(err);}, function (page) { // pass functions to handle 1. error or 2. the eventual value (like Either)
+    //    $('#container').html(page);
+    //});
+};
+
+VOYAGEAPP.otherFunctorExercise = function () {
+    var myMap = R.curry(function (f, obj) {
+        return obj.map(f);
+    });
+    //var ex1 = R.compose(myMap(R.get('title')), getPost);
+    //var ex2 = R.compose(myMap(function (x) {return "<div>" + x + "</div>";}), ex1);
+
+    //var clicks = Bacon.fromEventTarget(document.querySelector("#box"), "click");
+    //var htmlClicks = clicks.map(function (e) {return e.target.innerHTML;});
+    //htmlClicks.onValue(function(html){
+    //    console.log(html);
+    //});
+
+    //var pureLog = function(x){ console.log(x); return x; }.toIO();
+    //var searchInput = document.querySelector("#search");
+    //var keydowns = Bacon.fromEventTarget(searchInput, "keydown");
+    //var logs = R.compose(myMap(pureLog), keydowns);
+    //logs.onValue(function(io){
+    //    assertEqual(searchInput.value, runIO(io));
+    //});
+
+    var _Maybe = function (val) {this.val = val;};
+    var Maybe = function (x) {return new _Maybe(x);};
+    _Maybe.prototype.map = function (f) {
+        return this.val ? Maybe(f(this.val)) : Maybe(null); // running f inside Maybe context (abstract out function application)
+    };
+    _Maybe.prototype.repr = function (f) {
+        return ["val", this["val"] ? this["val"] : "null"].join(": ");
+    };
+    var safeGet = R.curry(function (x, o) {return Maybe(o[x])});
+    var user = {id: 2, name: "Albert", address: {street: {number: 22, name: 'Walnut St'}}};
+    var ex5 = R.compose(myMap(safeGet('name')), myMap(safeGet('street')), myMap(safeGet('address'))); // null checks begin to get nested, introducing large control flow => monad
+
+};
+
