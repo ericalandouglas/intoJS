@@ -295,3 +295,33 @@ VOYAGEAPP.otherFunctorExercise = function () {
 
 };
 
+VOYAGEAPP.functorLawsExample = function () {
+    var myMap = R.curry(function (f, obj) { // fmap function
+        return obj.map(f);
+    });
+    var _Maybe = function (val) {this.val = val;};
+    var Maybe = function (x) {return new _Maybe(x);};
+    _Maybe.prototype.map = function (f) {
+        return this.val ? Maybe(f(this.val)) : Maybe(null); // running f inside Maybe context (abstract out function application)
+    };
+    _Maybe.prototype.repr = function (f) {
+        return ["val", this["val"] ? this["val"] : "null"].join(": ");
+    };
+
+    var toArray = function (x) {return [x];};
+    var afbtb = R.compose(toArray, R.reverse); // a -f-> b -t-> tb
+    var atafmftb = R.compose(myMap(R.reverse), toArray); // a -t-> ta -fmapf-> tb
+    var efficientMapCompose = R.compose(myMap(R.compose(R.reverse, R.toUpper)), toArray);
+
+    var maybeToArray = function (m) {return m.val ? [m.val] : [];};
+
+    var ntmapf = R.compose(maybeToArray, myMap(R.add(1)));
+    var mapfnt = R.compose(myMap(R.add(1)), maybeToArray);
+
+    alert(
+        afbtb("bingo") + ", " + atafmftb("bingo") + "\n" +
+        efficientMapCompose("bingo") + "\n" +
+        ntmapf(Maybe(5)) + ", " + mapfnt(Maybe(5))
+    );
+};
+

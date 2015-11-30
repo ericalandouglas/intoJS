@@ -119,3 +119,20 @@ Other Functors
 - can build up future computations that only begin running once kicked off
 - fork expects two arguments when kicking off a future functor, a failure handler and a success handler to operate on the future value
 
+Functor Laws & Properties
+-------------------------
+- recognize map:
+    1. [x].map(f) = map(f, [x])
+    2. Maybe(x).attempt(f) = map(f, Maybe(x))
+    3. Promise(x).then(f) = map(f, promise(x))
+    4. EventStream(x).subscribe(f) = map(f, EventStream(x))
+- identity functor: map(id) == id
+- functor composition: compose(map(f), map(g)) == map(compose(f, g))
+- natural transformations: takes on functor to another without knowing anything about the contained value i.e. Maybe -> List
+- natural transformer (nt) composition: compose(nt, map(f)) == compose(map(f), nt)
+- api call with a possible post retrieval -> Future(Maybe(post))
+- click nav link and insert corresponding html on page -> EventStream(IO(Dom)), html insertion is IO, click is subscribed to event stream
+- submit signup form and return errors or make api call that creates user -> EventStream(Either(Future(User)))
+
+Monads
+------
