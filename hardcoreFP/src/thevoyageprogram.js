@@ -344,3 +344,17 @@ VOYAGEAPP.monadExample = function () {
     // uploadFromFile("What file?").fork(logErr, alertSuccess);
 
 };
+
+VOYAGEAPP.monadExercise = function () {
+    var safeGet = _.curry(function(x,o){ return Maybe(o[x]) });
+    var user = {id: 2, name: "Albert", address: { street: {number: 22, name: 'Walnut St'} } };
+    var ex1 = R.compose(chain(safeGet('name')), chain(safeGet('street')), safeGet('address'));
+
+    var getHref = function(){ return 'http://run.jsbin.io/runner' }.toIO();
+    var pureLog = function(x){ console.log(x); return x; }.toIO();
+    var ex2 = R.compose(chain(pureLog), getHref);
+
+    var e3 = R.compose(chain(getComments), map(safeGet('id')), getPost); // getPost returns a Maybe, fmap over to get Maybe id, chain to get comments
+
+};
+

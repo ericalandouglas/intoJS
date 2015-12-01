@@ -141,4 +141,8 @@ Monads
 - monads are like nest computations, a monad is a pointed functor with mjoin :: M M a -> M a and/or chain :: (a -> M b) -> M a -> M b i.e. monad has map, of, and one or both of mjoin and chain (can define mjoin in terms of chain and vice versa)
 - mjoin(Container(Container(2))) = Container(2), like flattening a list
 - common to combine contexts and introduce nested Maybes, etc. use mjoin to keep the chain of Maybes flat and confined to a single Maybe instance
-
+- Monad laws:
+    0. mcompose: mcompose(f, g) == compose(mjoin, fmap(g), mjoin, fmap(f)) == compose(chain(g), chain(f))
+    1. left identity: mcompose(M, f) == f
+    2. right identity: mcompose(f, M) == f
+    3. associativity: mcompose(mcompose(f, g), h) == mcompose(f, mcompose(g, h))
