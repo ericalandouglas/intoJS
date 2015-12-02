@@ -31,10 +31,10 @@ Chapter 2: Lexical Scope
 - JS like many other programming languages employs lexical scope model
 - lexical scope is scope that is defined at lex-time, based on where variables and blocks of scope are authored, set by time lexer processes
 - each new function creates a new "bubble" of scope, function scopes can be contained by other function scopes
-- scope look up stops once it finds he first match, inner scope over writes outer scope i.e. "shadowing"
+- scope look up stops once it finds the first match, inner scope over writes outer scope i.e. "shadowing"
 - lexical lookup process only applies to first class identifiers such as foo, accessing foo.bar first finds foo with lexical lookup but then object property access rules are used to find bar
 - cheating lexical scope leads to poor performance in JS i.e. eval can modify authored lexical scope at runtime (can be avoided in strict mode)
-- dynamically generating code have performance degradations that make them unfavorable and uncapable
+- dynamically generating code has performance degradations that make them unfavorable and uncapable
 - engine can't know at lexing time contents of dynamic eval expressions and can't perform compiler optimizations
 
 Chapter 3: Function Versus Block Scope
@@ -66,4 +66,33 @@ Chapter 3: Function Versus Block Scope
 
 Chapter 4: Hoisting
 -------------------
+- both function and block scope adhere to the rule that ny variable declared within a scope is attatched (bound) to that scope
+- JS will compile code before it interprets it, part of compilation finds and associates all declarations with their appropriate scope (the heart of lexical scope)
+- all declarations, both variables and functions, are processed before any part of the code is executed
+- var a = 2; first statement, the declaration, is processed at compile time, the second statement, the assignment, is left in place for execution phase
+- JS moves declarations to the top of their scope i.e. hoists them
+- var foo = function bar () {..}; hoists the declaration var foo; to the top of the scope, a call to foo() before the assignment will result in a type error, foo is in scope because of hoisting but JS has not assigned a function to it yet so it does not have the function type
+- functions are hoisted first/before variables
 
+Chapter 5: Scope Sclosure
+-------------------------
+- closures are employed automatically in JS because of its reliance on lexical scope
+- Closure: a function hat is able to remember and access its lexical scope even when the function is executed outside its lexical scope
+- closures let functions access the lexical scope they were defined in at author time
+- whatever facility is used to transport n inner function outside of its lexical scope, it will maintain a scope reference to where it was originally declared
+- closures appear in timers, event handlers, Ajax requests, cross-window messaging, web workers, asynchronous tasks, callback functions
+- to capture each iteration value (i) in the body of a loop, an IIFE can be used with an inner declaration and assignment to the current iteration value (var j = i; in the body of the IIFE) to close over and capture the iterating variable, can also use let declarations in head of for loop
+- most common form of module pattern is revealing module, return object is essentially the API for the module
+- two requirements of module pattern:
+    1. must be an outer enclosing function, and must be invoked at least once (invoking creates module instance)
+    2. enclosing function must return back atleast one inner function that enjoys access over the private scope and access private state
+- to enforce the singleton pattern on module objects, create a single module instance with an IIFE
+- ES6 adds first-class syntax upport for concept of modules, ES6 modules are static, semantics considered before runtime, functions ina  module are enclosed in a scope closure
+
+Appendix A: Dynamic Scope
+-------------------------
+- dynamic scope uses the call stack to resolve vriable references unlike lexical scoping
+- dynamic scope cares about where a function was called from, lexical scope cares about where a function was declared
+
+Polyfilling Block Scope
+-----------------------
