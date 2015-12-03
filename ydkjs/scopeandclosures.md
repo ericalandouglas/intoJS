@@ -96,3 +96,17 @@ Appendix A: Dynamic Scope
 
 Polyfilling Block Scope
 -----------------------
+- the ES6 let keyword gives fullblock scoping capabilty to code
+- try/catch can achieve block scope by throwing values into the catch block, the values won't be visible to the try/catch block's enclosing lexical scope
+- can use a code transpiler to migrate ES6 code into valid ES5 code as coffeescript can be transpiled into JS
+- Google maintains a Traceur project with is tasked with transpiling ES6 JS code into pre ES6 code
+- the let statement explicitly sets up a block and has all variables scoped to the block declared at the head (like how hoisitng moves all declarations to the top of the enclosing function's scope)
+- use let-er to gain transpiler support for the let statement which is not a feature of ES6
+- while IIFEs may (currently) outperform try/catch, introducing a new function expression changes meaning of certain keywords like this, return etc.
+
+Appendix C: Lexical This
+------------------------
+- to salvage specific this instances in nested functions, a variable self can be employed to capture a specific this (i.e. an object/module)
+- fat arrow syntax => (shorthand for functions) in ES6 allow the this variable to bind to the value of the function's enclosing lexical scope
+- try to stick to one idiom for a given piece of code i.e. don't mix fat arrow => with normal functions i.e. lexical scope
+- can use the bind function method to preserve the value of this as well and allow functions to "inherit" this
