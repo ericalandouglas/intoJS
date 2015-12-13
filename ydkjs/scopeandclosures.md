@@ -74,10 +74,10 @@ Chapter 4: Hoisting
 - var foo = function bar () {..}; hoists the declaration var foo; to the top of the scope, a call to foo() before the assignment will result in a type error, foo is in scope because of hoisting but JS has not assigned a function to it yet so it does not have the function type
 - functions are hoisted first/before variables
 
-Chapter 5: Scope Sclosure
+Chapter 5: Scope closures
 -------------------------
 - closures are employed automatically in JS because of its reliance on lexical scope
-- Closure: a function hat is able to remember and access its lexical scope even when the function is executed outside its lexical scope
+- Closure: a function that is able to remember and access its lexical scope even when the function is executed outside its lexical scope
 - closures let functions access the lexical scope they were defined in at author time
 - whatever facility is used to transport n inner function outside of its lexical scope, it will maintain a scope reference to where it was originally declared
 - closures appear in timers, event handlers, Ajax requests, cross-window messaging, web workers, asynchronous tasks, callback functions
@@ -94,7 +94,7 @@ Appendix A: Dynamic Scope
 - dynamic scope uses the call stack to resolve vriable references unlike lexical scoping
 - dynamic scope cares about where a function was called from, lexical scope cares about where a function was declared
 
-Polyfilling Block Scope
+Appendix B: Polyfilling Block Scope
 -----------------------
 - the ES6 let keyword gives fullblock scoping capabilty to code
 - try/catch can achieve block scope by throwing values into the catch block, the values won't be visible to the try/catch block's enclosing lexical scope
