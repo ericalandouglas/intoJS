@@ -56,5 +56,18 @@ Chapter 2: this All Makes Sense Now
 
 Chapter 3: Objects
 ------------------ 
-- 
+- objects come in two forms: 1. literal form crated with { }, or constructed form via new Object(), literal form very common
+- objects are one of six primary types, string, number, boolean, null, undefined, object (functions are object type)
+- string, number, boolean, null, undefined are not objects
+- complex primitives are the function (callable object) and array (more structured) object subtypes
+- JS has the following built-in object constructors: String, Number, Boolean, Object, Function, Array, Date, RegExp, Error
+- string literals are in primitive form and are coerced to object form for string method support when needed, literla form preffered in code
+- number and boolean literals support object coerscion, null and undefined do not, dates must be constructed as objects
+- objects, arrays, regexps, and functions are always object whether created literally or with constructor, error objects are usually implicitly created(thrown on errors)
+- contents of an object consist of values (any type) tored at specifically named locations reffered to as properties
+- access object properties using . (property access) or \[ \] (key access), property names are always converted to string literal form first to create key
+- JS supports computed property named syntax when creating objects in literal form, var obj = { [prefix + "bar"]: 1 }, used with ES6 Symbols
+- every access of an object's property is reffered to as property access, including functions (not called method access, objects don't technically own funciton properties)
+- arrays are objects with indices (positively numbered properties) and additional properties can be added to them (adding additional non indice properties does not alter array length)
+- if you add a property name that looks like a number to an array it will be treated like an index (receive certain optimizations specific to array object subtype)
 
