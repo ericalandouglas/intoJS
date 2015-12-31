@@ -70,4 +70,28 @@ Chapter 3: Objects
 - every access of an object's property is reffered to as property access, including functions (not called method access, objects don't technically own funciton properties)
 - arrays are objects with indices (positively numbered properties) and additional properties can be added to them (adding additional non indice properties does not alter array length)
 - if you add a property name that looks like a number to an array it will be treated like an index (receive certain optimizations specific to array object subtype)
+- ES6 has added an Object.assign method (takes a target and source object) to support shallow copying of objects, assign returns the target object
+- aside from holding values, object property descriptors include 3 other characteristics, 1. writable 2. enumerable 3. configurable (object properties are inspectable with Object.getOwnPropertyDescriptor)
+- use Object.defineProperty to add new property descriptors (or modify configurable properties) in a more manually explicit way
+- if not writable, value of property is immutable, if not configurable, defineProperty method and delete unusable with the property descriptor, if not enumerable property won't be accessible in for .. in loops
+- to create constant object properties set configurable and writable to false
+- to prevent new properties from being added use the Object.preventExtensions method
+- Object.seal prevents the addition of new properties and the reconfiguration of existing properties
+- Object.freeze achieves highest level of immutability and calls seal on an object while also setting all properties to be unwritable
+- [[Get]] operations on object properties first inspects object for property, if not foundsearches the [[Prototype]] chain, [[Get]] returns undefined if it can not find the property at all
+- there is also a default [[Put]] operation for objects which checks property accessor first (custom setter and getter), then data descriptor and writable characteristic (is it false), otherwise finally set value normally
+- when a property is defined with its own getter and setter methods it is called an accessor descriptor and not a plain old data descriptor
+- define custom getters and setters with object literal syntax (get a()) or through Object.defineProperty, usually define both getter and setter to avoid unexpected behavior
+- to check property existence on object and its prototype chain use the in operator, to check just the object use method hasOwnProperty
+- Object.create(null) does not delegate to Object.prototype on new object property access, hasOwnProperty will not be available (use Object.prototype.hasOwnProperty.call)
+- in operator is strictly for checking property existence and should not be used to check array membership, etc.
+- only use for..in enumeration on objects (traverses object and its [[Prototype]] chain), use conventional indexed for loops to traverse arrays
+- helpful property inspection and enumeration methods include propertyIsEnumerable, Object.keys (array of enumerable properties), Object.getOwnPropertyNames (all properties belonging to the passed in object)
+- ES5 array iteration methods include forEach, every (enumerate until return false), and some (enumerate until return true)
+- ES6 provides support for looping over array and object values with for..of syntax (and uses built in @@iterator function which returns an iterator object performing it.next() calls)
+- @@iterator is provided by default on arrays but not objects, accessed with Symbol.iterator, it is possible to define custom @@iterator for objects (via Object.defineProperty or though literal syntax), can create infinite iterators
+
+Chapter 4: Mixing "Class" Objects
+---------------------------------
+
 
