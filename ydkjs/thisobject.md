@@ -93,5 +93,26 @@ Chapter 3: Objects
 
 Chapter 4: Mixing "Class" Objects
 ---------------------------------
+- OO stresses that data intrinsically has associated behavior that operates on it, package data and behavior together
+- classes also imply a way of classifying a certain type of data strucutre i.e. base vehichle class is extended by car class that specializes
+- relative polymorphism is the idea that general behavior of a parent class can be overridden by a child class to give it more specifics
+- JS does not natively support the notions and design pattern of classes
+- class, instance design philosophy follows that of an architect with blue prints and physical buildings, a class (blueprint) must be instantiated into an instance (physical building) to be interacted with
+- constructors of classes create instances and belong to the class, have same name as class usually, used with the new keyword
+- virtual (relative) polymorphism is used in inheritance to extend and specialize child classes
+- relative here means any method can reference another method at a higher level in the inheritance hierarchy, usually one level up
+- in JS parent child relationship exists only between the two .prototype objects of respective constructors, constructors are not directly related
+- polymorphism does not link a child class to its parent, the child instead copies what it needs from the parent class
+- JS does not provide a native mechanism for multiple inheritance
+- JS object mechanism does not automatically copy behavior when inheriting or instantiating, no class to instantiate only object
+- objects don't get copied to other objects, they get linked together, can use implicit and explicit mixins to achieve copy behavior between classes
+- can use mixin or extends function to copy object properties to another object, "mix in" the contents of one object into another (chocolate chips into cookie dough)
+- use explicit pseudopolymorphism when a new objects shadows method of another object i.e. Vehicle.drive.call(this) to inherit methods (no relative polymorphism prior to ES6), explicitly state object and method, performing a bind (using call)
+- explicit pseudopolymorphism should be avoided because of its brittleness and maintenance costs (outweigh the benefits)
+- mix ins create duplicated references, if a modificaton is made to a function being referenced by a mixin object and other object, both objects will reflect the new functionality because they contain references to the sole function
+- parasitic inheritance is subtly implicit and explicit, copy original object method to be overridden, then use the copy to create new method, preserving the old method functionality and storing it for use
+- implicit polymorphism is basically the same thing as explicit pseudopolymorphism (so avoid when possible) where a method is borrowed and rebinded (Something.cool.call(this))
+- traditional classes imply a copy of class functionality is made on instance initialization and when a child inherits from a parent, JS does not do any of this and faking classes in the language will only lead to problems
 
-
+Chapter 5: Prototypes
+---------------------
