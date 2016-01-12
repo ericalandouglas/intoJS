@@ -116,3 +116,21 @@ Chapter 4: Mixing "Class" Objects
 
 Chapter 5: Prototypes
 ---------------------
+- objects in JS have an internal property, [[Prototype]] which is a reference to another object, almost alwasy non-null when object is created
+- object's default [[Get]] operation will follow the prototype chain of an object until it ends (returning undefined) or the property is found
+- for..in enumeration will loop over all of the properties (that are enumerable) in an object's prototype chain, using in operator for existence checking checks entire chain of object (regardless of enumerability)
+- at the top of every normal prototype chain is Object.prototype (supplies methods such as toString, hasOwnProperty, etc.)
+- properties directly on objects will shadow any property on the object's prototype chain that shares a name with the direct properties
+- three scenarios for the assignment myObject.foo = "a":
+    1. if normal data accessor property named foo is found on the prototype chain and is not read only, a new direct property is created on the object shadowing the prototype property
+    2. if the prototype property is marked as read only the assignment is ignored (error thrown in strict mode)
+    3. if the prototype property found is a setter the setter is called (not modified) and no direct property is created on the object (no shadowing occurs)
+- an object's defineProperty method will always add a direct property to the object effectively shadowing if a prototype property shares the same name (circumvents non-shadowing in cases 2 & 3 above)
+- JS just has objects, one of the few programming languages that is strict OO (objects created directly), objects define their own behavior
+- all functions by default get public, non-enumerable [[Prototype]] property
+- for a function named Foo, calling new Foo() creates a new object that is [[Prototype]]-linked to Foo.prototype (a = new Foo(), Object.getPrototypeOf(a) === Foo.prototype)
+- JS doesn't copy and create classes, create multiple obejcts that are [[Prototype]]-linked to a common object (no copying done on object creation)
+- JS does not make copies i.e. class functionality copied in an instance, it makes links between objects with [[Prototype]] i.e. prototypal inheritance (better name is delegation, delegating behavior and functionality to objects)
+- all function's prototype objects get a constructor property that is the function itself i.e. Foo.prototype.constructor === Foo
+- functions themselves are not constructors in JS, a constructor call is performed when a function is called with new (the new keyword creates and returns the created object almost as a side effect)
+
