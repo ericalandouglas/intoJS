@@ -131,6 +131,22 @@ Chapter 5: Prototypes
 - for a function named Foo, calling new Foo() creates a new object that is [[Prototype]]-linked to Foo.prototype (a = new Foo(), Object.getPrototypeOf(a) === Foo.prototype)
 - JS doesn't copy and create classes, create multiple obejcts that are [[Prototype]]-linked to a common object (no copying done on object creation)
 - JS does not make copies i.e. class functionality copied in an instance, it makes links between objects with [[Prototype]] i.e. prototypal inheritance (better name is delegation, delegating behavior and functionality to objects)
-- all function's prototype objects get a constructor property that is the function itself i.e. Foo.prototype.constructor === Foo
+- all function's prototype objects get a constructor property that is the function itself i.e. Foo.prototype.constructor === Foo, Object.prototype.constructor === Object
 - functions themselves are not constructors in JS, a constructor call is performed when a function is called with new (the new keyword creates and returns the created object almost as a side effect)
+- it is unsafe to rely on an object's constructor property to reference the function that created the object (when called with new), the .constructor propertty is writable and may be arbitrary nonsense
+- to link a new [[prototype]] object from an existing object use Object.create i.e. Bar.prototype = Object.create(Foo.prototype)
+- ES6 allows for the modification of an existing [[prototype]] property instead of replacing with Object.setPrototypeOf(Bar.prototype, Foo.prototype)
+- introspection in JS can be accomplished with instanceof if you want to inspect the ancestry of one instance i.e. a instanceof Foo
+- using instanceof with a hard bound function (.bind) behaves according to the original function (original function prototype is used)
+- to check if two arbitrary objects are related anywhere along their [[prototype]] chains use .isPrototypeOf
+- can use .__proto__ (acts like a getter/setter) on an object in ES6 to get the original prototype object i.e. a.__proto__ === Foo.prototype
+- should treat an object's [[prototype]] property as read only for the majority of the time
+- the links objects make with their [[prototype]] property is called the prototype chain i.e. a -> Foo -> Object
+- using Object.create(null) creates an object with no [[prototype]] property, this is normally done to create a dictionary for pure data storage
+- don't over look the fact that an object delegating to its [[prototype]] property to find properties (this isn't necessarily a fall back and shouldn't intend to be) not directly on the object is a bit magical and can be surprising to other devs using your API
+- delegation can be less surprising and more explicit as an internal implementation detail when creating an API rather then being plainly exposed in the interface
+
+Chapter 6: Behavior Delegation
+------------------------------
+
 
