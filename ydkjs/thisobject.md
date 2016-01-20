@@ -148,5 +148,21 @@ Chapter 5: Prototypes
 
 Chapter 6: Behavior Delegation
 ------------------------------
+- [[Prototype]] mechanism is an internal link that exists on one object that references another object
+- properties are searched on an object's [[Prototype]] property if not found directly on the object, and so on to the end of the [[Prototype]] chain (links between the objects)
+- in JS its all about objects being linked to other objects (no native abstract mechanisms like "classes")
+- behavior delegation means to let some object (XYZ) provide a delegation task (to Task) for property or method references if not found on the object (XYZ)
+- mutual delegation in JS is disallowed i.e. linking an object A to object B and then B to A (can result in infinite recurse of [[Prototype]] properties)
+- it is often times simpler sticking to the OLOO (objects linked to other objects) paradigm rather than inflated and more complicated class based OO
+- OLOO better supports seperation from concerns by explicitly doing object construction first and then object initializtion as a later second step (not performed in the same step as construction like classical OO)
+- anonymous functions (functions that lack named indentifier) make debugging harder, self referencing harder, harder to understand code (be aware when writing concise methods on objects)
+- type introspection: inspecting an instance to find out what kind of object it is
+- when introspecting with instanceof with function make sure to pass along the function's prototype (not just the function) i.e. Bar.prototype instanceof Foo
+- can also use duck typing techniques when introspecting by not using instanceof and checking properties directly i.e. if (a1.something)...
+- duck typing can be brittle, ES6 assumes any object with a .then function property is promise like in nature when the object may not be related to promises at all
+- with OLOO and ES6 can avoid instanceof for introspection (keeping it more simple) and just rely on [[Prototype]] chain and functions isPrototypeOf, getPrototypeOf
 
+Appendix A: ES6 Classes
+-----------------------
+- 
 
