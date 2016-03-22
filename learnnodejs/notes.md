@@ -223,5 +223,105 @@ Events and the Event Emitter
     - syntactic sugar: a feature that only changes how you type something, but nothing changes under the hood
     - be wary when using the class syntactic sugar syntax, may confuse devs as JS uses prototypal inheritance and isn't classical OO
 
+10. Inheriting From the Event Emitter - Part 3
+    - see the Greetr.js module in emitter directory of src for example ES6 class module which extends Node's native EventEmitter
+
+Asynchronous Code, libuv, The Event Loop, Streams, Files, and more...
+---------------------------------------------------------------------
+
+1. JavaScript is Synchronous
+    - asynchronous: more than one process is running simultaneously
+    - Node does things asynchronously, V8 does not
+    - synchronous: one process executing at a time, only one line of code executes at a time, never two or more
+    - JavaScript is synchronous, Node is asynchronous
+
+2. Callbacks
+    - callback: a function passed to another function to be invoked at some point
+    - the function receiving the callback nvokeds the function when it is done with its work essentially 'calling back'
+
+3. libuv, The Event Loop, and Non-Blocking Asynchronous Execution
+    - libuv is a C slibrary that helps manage events related to the operating system and closer to the machine, it is embedded in Node
+    - there is a queue of completed events inside libuv running alongside V8
+    - there also exists an event loop in libuv that constantly checks the queue of completed events
+    - operating system places completed events in libuv's queue
+    - libuv processes completed events and fires any necessary callbacks inside V8 (running JavaScript code)
+    - things hapen in both libuv and V8 at the same time inside Node making Node asynchronous
+    - the above architecture gives way to event driven non-blocking I/O in V8 JavaScript
+    - non-blocking: doing other things without stopping your program from running, made possible by asychronocity
+    - visit libuv.com for source and docs on the library
+
+4. Streams and Buffers
+    - buffer: temporary holding spot for data being moved from one place to another, intentionally limited in size
+    - data is moved through a buffer via a stream, like processing files line by line, one line in the buffer at a time, consumed from the file stream
+    - stream: a sequence of data made available over time, pieces of data that eventually combine into a whole
+    - streams (coupled with buffers) help us process data as we load it and not get stuck waiting for the entire piece of data to load
+
+5. Binary Data, Character Sets, and Encodings
+    - binary data: data stored in binary, sets of zeros and ones, core of the math computers are based on, each 1 or 0 is called a bit or binary digit
+    - binary is base 2, only needs 2 digits to represent numbers which is easy for computers to work with (physically i.e. transistor switches)
+    - character set: a representation of characters as numbers, each character gets a number, examples include Unicode and ASCII
+    - need more bits to represent a larger set of characters (chinese characters, greek, emoji, etc.)
+    - character encoding: how characters are stored in binary, numbers in the character set or code points are converted and stored in binary
+    - encoding is about how many bits used to represent a number, utf-8 encoding uses 8 bits and is popular for international usage
+    - Node expands V8 to help us deal with binary data more easily
+
+6. Buffers
+    - Node has a Buffer module that is a wrapper around a buffer in the C++ core
+    - can store strings in buffers as binary data (as 0s and 1s) with a particular encoding (utf-8, base64 - web security, etc.)
+    - most of the time you work with buffers that are returned from other feeatures within Node
+    - see bufferApp.js in the src/jsconcepts directory for some example Buffer usage
+
+7. ES6 Typed Arrays
+    - byte: 8 bits (8 0s and 1s), max number representation is 255
+    - V8 engine has native ArrayBuffer constructor available, each element is 1 byte i.e. 8 element ArrayBuffer stores 64 bits of data
+    - can create views with ArrayBuffers like Int32Array
+    - see bufferApp.js in the src/jsconcepts directory for some example Buffer usage
+
+8. JS Callbacks
+    - a callback is a function passed to another function which we assume will be invoked at some point
+    - the receiving function 'calls back' by invoking the passed function you give it when its done doing its work
+    - can pass data to callback functions for it to use internally
+    - see callbackApp.js in the src/jsconcepts directory for examples
+
+9. Files and fs
+    - the fs native Node module is a good utility for eorking with files
+    - read files with readFileSync(path/to/file, encoding), default encoding = utf-8
+    - readFileSync loads the contents into a biffer and then uses the encoding to read proper characters from binary data
+    - __dirname is a global var available in Node modules and is a helpful shortcut for working with file paths
+    - most of the time you don't want to read files synchronously, don't want to hold requests up, use asynchronous calls whenever possible
+    - use fs.readFile to load files asynchronously, it takes a filepath and a callback function to be invoked whent he file has completed loading
+    - error-first callback: a callback that takes an error object as its first parameter, object is null if no error, else contain an object defining the error
+    - error-first callback is a standard Node pattern, so we know what order to place parameters in when working with callbacks in Node
+    - see example usage in the fileApp.js module in src/fs directory
+
+10. Streams
+    - a stream is just a sequence of chunks of data
+    - Chunk: a piece of data beign sent through a stream, data is plit in 'chunks' and streamed
+    - Node provides a variety of streams avaiable through the native stream module
+    - Stream is an ABC and Node has custom Streams like Readable that inherits from Stream which inherits from EventEmitter
+    - Abstract base class: a type of constructor you never work directly with but inherit from, create custom objects that inherit from ABCs
+    - you can use fs.createReadStream(filePath, options) to create a Stream that reads a file, can use the .on EventEmitter protocol to respond to chunks loading
+    - fs.createWriteStream creates a file stream you can asynchronously write to
+    - see example usage in the streamApp.js module in src/fs directory
+
+11. Pipes
+    - Pipe: connecting two streams by writing to one stream what is being read from another
+    - in Node you pipe from a Readable stream to a Writable stream
+    - pipes can be chained and connected sending chunks to various different writable streams, as long as you first start with a readable stream tht is producing the chunks
+    - Node has native zlib module to handle file compression and common file compression algorithms
+    - Method chaining: a method returns an object so we can keep calling more methods, sometimes it returns the parent object (the original object, called cascading) and sometimes some other object
+    - Node pipes support the notion of chaining
+    - pipes help keep the web server responsive and more efficient with resources
+    - prefer to use pipes whenever possible in real world applications
+ 
+14. Web Server Checklist
+    - fs utility helps us efficiently deal with writing and reading files and binary data using pipes and streams asynchronously
+    - Node has a lot of utility functions and modules built in that support doing work asynchronously to help us deal with work that takes a long time in a more efficient manner
+
+HTTP and being a Web Server
+---------------------------
+
+1. TCP/IP
+    - 
 
 
