@@ -322,6 +322,93 @@ HTTP and being a Web Server
 ---------------------------
 
 1. TCP/IP
+    - 2 protocols that are the backbone of the internet
+    - Protocol: a set of rules two sides agree on to use when communicating
+    - both client and server are programmed to understand and use these particular sets of rules (like 2 people from different countries agreeing on a language to converse with)
+    - server performs (responds with) services, client asks (requests) for them
+    - each computer has a unique IP (internet protocol) address, IP tells us where to send data
+    - a web browser connects to a web server using a socket
+    - various protocols can be used between client and server for structuring data i.e. http, ftp, smtp (text, file, mail)
+    - TCP: transmission control protocol is responsible for defining the set of rules on how the information is sent (regardless of structure) from server to client
+    - TCP splits info into pieces and sends them as packets over the open socket from server to client
+    - TCP acts like a stream because it continually pushes packets along the socket connection, Node ingests packets like a stream then
+    - sockets are constantly open and closed on the web, newer ideas keep web socket connections open for prolonged periods of time
+
+2. Addresses and Ports
+    - Port: once a computer receives a packet, how it knows what program to send it to
+    - programs are set up on a machine to receive packets from a particular port, program is 'listening' to that port
+    - browser makes a request at a particular server (particular IP address), Node JS is assigned a unique port number to receive info sent in request using server IP and Node port (like 443)
+    - socket address is an IP address and port together, usually use a domain name instead of an IP/Port combo (socket address)
+
+3. HTTP
+    - HTTP: A set of rules (and format) for data being transferred on the web, hypertext transfer protocol
+    - http is a format defining dagta being transferred via tcp/ip (html, JS files, images, etc.), protocol of the web
+    - client makes http requests at web servers, request can have headers which are just name value pairs for things like connection length, host, etc.
+    - web server response is in HTTP format, response has status code, headers for content properties (like type), and a body (like html or a JS file)
+    - http response header content type is a MIME type, browser acts on the response according to its MIME type for proper interpretation
+    - MIME type: a standard for specifiying the type of data being sent, multipurpose internet mail extensions (application/json, text/html, image/jpeg)
+
+4. http_parser
+    - a C program embedded in Node for parsing client requests and server responses using the HTTP protocol (parses headers, status, body, etc.)
+    - Node has native http and https native modules for handling http(s) request and responses
+    - Node _http_server.js module (used in http/https modules) wraps the C http_parser program, builds proper request and response formats
+    - http module can create an http server using a request listener to accept reqeusts and generate responses, Node has proper pieces for building a web server
+
+5. Build a Web Server in Node
+    - http.createServer accepts one callback parameter that acts as an event listener
+    - the event listener passes a request and response to the callback parameter function when the emittance of either a request or response happens, allows for streaming response back
+    - see httpApp.js in src/webserver for how to build a simple HTTP response in Node and have the node web server listen to a specific port
+    - the request and response objects passed to the callback can be examined and offer utilities so the web server can properly receive and respond
+
+6. Outputting HTML and Templates
+    - use the fs native Node module to read server side html files and send them to clients' browsers
+    - to pick up on Node server code changes you must stop and restart the Node server app
+    - use MIME type 'text/html' to have browser properly render html, 'text/plain' just spits out raw html when used
+    - Template: text designed to be the basis for final text or content after being processed i.e. <h1>{Message}</h1> => {Message} is a template to be replaced with some final text
+    - templating usually involves the of use some specific template language so templating system knows how to replace placeholders with real values
+    - see httpApp.js in src/webserver for html/templating example response
+    - html templates allow you to build content dynamically on the server and send final result to client as response
+    - Node JS core does not include a native templating engine
+
+7. Streams and Performance
+    - synchronous processing is a non option when the server expects many requests and wants to process large amounts of data (like files)
+    - viable option here is asynchronous streaming of responses to clients for best performance
+    - send chunks of data instead of all of it at one time to limit buffer sizes and memory usage of Node server
+    - use streams wherever possible in Node unless you have good reason not to
+    - see httpApp.js in src/webserver for file streaming example response
+
+8. APIs and Endpoints
+    - API: A set of tools for building a software application, stands for application programming interface
+    - Web APIs usually make these tools available via a set of URLs which accept and send only data via HTTP and IP/TCP protocols
+    - Endpoint: one URL in a web API, sometimes the endpoint does multiple things based on the HTTP request headers
+    - most popular data format used with endpoints and web APIs is JSON
+
+9. Outputting JSON
+    - use the native JSON object available to V8 engine for processing and handling JSON data in web server responses and requests
+    - Node makes it very easy to serialize objects into JSON string and generate appropriate JSON responses for clients
+    - Serialize: translating an object into a format that can be stored or transferred
+    - JSON.stringify is a serialization method to aid in sending web server JSON responses
+    - popular serialization formats include JSON, CSV, XML
+    - 'deserialize' is the opposite (converting format back into JS object)
+    - can deserialize JSON strings in requests from client to load proper JS objects in Node server, objects can aid in generating appropriate responses
+    - see httpApp.js in src/webserver for JSON example response
+
+10. Routing
+    - Routing: mapping HTTP requests to content, whether actual files exist on the server, or not
+    - server examines request URL and acts accordingly to what it received, chooses content to serve based on URL
+    - routing can get complicated i.e. fetching various items from a database table by id, each item has its own url => /items/{:id}
+    - see httpApp.js in src/webserver for routing via URL examination examples 
+
+11. Web Server Checklist
+    - already seen how to handle modules (require, module.exports), handling files (fs module), handle tasks that are long running (async, callbacks, streams, pipes)
+    - now we know we have the ability to communicate over the internet, Node under the hood supports protocols IP, TCP, HTTP
+    - Node allows us to accept requests and send responses in the standard format with its native modules http and https
+
+NPM: The Node Package Manager
+-----------------------------
+
+1. Packages and Package Managers
     - 
+
 
 
