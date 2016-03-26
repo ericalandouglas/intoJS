@@ -408,6 +408,53 @@ NPM: The Node Package Manager
 -----------------------------
 
 1. Packages and Package Managers
+    - Package: simply code, various packages (code) is managed and maintained with a package management system
+    - Package management system: software that automates installing and updating packages, deals with what versions are needed and manages dependencies
+    - Dependency: Code (package) that another set of code depends on to function, when you use a package in your app it becomes a dependency
+
+2. Semantic Versioning (semver)
+    - Versioning: specifying what version of a set of code (package/app) this is
+    - versioning allows others can track if a new version has come out, can watch for new features or for 'breaking changes'
+    - semantic imlplies that something conveys meaning
+    - versioning format is major.minor.patch i.e. 1.5.2
+    - patch increment entails that bug fixes were made and code should still be funcitoning properly
+    - minor increment entails that some features were added but all existing code should still work fine (no breaking changes)
+    - major increment entails that big changes were made and there may be some breaking changes introduced, should document major changes
+    - more information and some history are available at semver.org, semver is very prominent in Node
+
+3. npm and the npm registry: Other People's Code
+    - npm can refer to two things: 1. the package registry holding Node packages, or the program run to install and maintain packages
+    - see npmjs.com for more info on npm and available packages, there are many pacakges available (like getting more info on express)
+    - normal installation of packages: npm install <package>
+    - be sure to reference a packages activity, popularity, source code, documentation, etc. to gauge how effective a package may be for your own work
+
+4. init, nodemon, and package.js
+    - to initiate a node npm app use the npm init command at the root of the app's directory, this creates the package.json file
+    - use the command npm install <package> --save to update the dependency field in the package.json file
+    - npm install <package> creates a node_modules directory where all your app's dependencies are placed
+    - the ^ character at the beginning of dependency versions tells npm to automatically install new minor updates and patches, ignoring major updates
+    - use the ~ to tell npm to only automatically install patches, ignoring minor and major updates
+    - use npm install to easily install all dependencies listed in package.json, issue command in directory where package.json lives
+    - require can look into the newly created node_modules directory when used in your own modules
+    - use command npm install <package> --save-dev to save an npm package to package.json as a dev dependency (like modules that help with testing, profiling, etc.) and not as a required dependency your app needs to run
+    - --save-dev option will create a devDependencies field in the package.json file
+    - servers can ignore installing dev dependencies this way only grabbing dependencies necessary for app to function
+    - to install npm packages globally use -g flag i.e. npm install -g <package>
+    - installed npm packages have their own node_modules folder which are that packages dependecies, this helps keep packages self contained even if the chain of node_modules directories gets beefy
+    - use npm update to update your app's dependencies as specified in package.json
+    - nodemon helps your app automatically pick up on changes and restart itself helping streamline development
+    - nodemon has its own cli tool you use to execute node modules that automatically restart when needed
+
+5. Using Other People's Code
+    - anyone can push code into npm so be sure the packages you choose will reliably work for you
+    - don't be afraid to dig into other's source code, its all just other's JS code
+    - be judicious when choosing, test well, stick to semversioning, and npm and registry will be of great benefit
+
+Express
+-------
+
+1. Installing Express, Making it Easier to Build a Web Server
+    - npm makes installing express very easy
     - 
 
 
