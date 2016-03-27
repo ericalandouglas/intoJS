@@ -454,8 +454,70 @@ Express
 -------
 
 1. Installing Express, Making it Easier to Build a Web Server
-    - npm makes installing express very easy
+    - npm makes installing express very easy i.e. npm install express
+    - the express module exports a function that create an express application when invoked
+    - the returned application is a function with many helpful properties for dealing with web server tasks
+    - Environment variables: global variables specific to the environment (server) the code is living in
+    - different servers can have different variable settings, we can access the values in code
+    - access environment variables in node through the process.env object
+    - HTTP method: specifies the type of action the request wishes to make, usually one of GET, POST, PUT, DELETE (called verbs)
+    - submitting data like in a form is usually a POST request, grabbing data like an html template is usually a GET request
+    - same URL like index '/' can support multiple actions/verbs i.e. GET and POST
+    - express response objects are smart enough to look at the content being sent and make the appropriate headers (auto detects html, etc.)
+    - use the .json method of express response object to send literal JS objects as a properly formatted JSON repsponse
+    - see index.js in src/expressapp for an example app
+
+2. Routes
+    - see expressjs.com for detailed documentation about express including what is available to help with routing and url matching
+    - use : in express url string to signify variable i.e. '/people/:id' => id is a variable and can be anything
+    - use the request object's params property to access variables like id above when generating a response
+    - see index.js in src/expressapp for examples of using routing with an express app
+
+3. Static Files and Middleware
+    - Middleware: code that sits between two layers of software, like in the case of express, code working between the request and response
+    - Static: not dynamic, fixed content that never changes once incepted, no code processing done, HTML, CSS, and images are examples of static files
+    - you can use middleware provided by Node or custom made yourself, coupled with any amount of other middleware when handling one, many, or all requests
+    - custom middleware packages exist to help with things like auth (passport), or cookies (cookie-parser) - little piece of info sitting in browser
+    - see index.js in src/expressapp for middleware examples
+
+4. Templates and Template Engines
+    - express allows you to plug in any template engine you can download from npm (like jade) using the app.set('view engine', '<TEMPLATE ENGINE PACKAGE>') method for dynamic html generation
+    - see documentation at expressjs.com for more info about template engines and how to use them with express
+    - template engine used in these examples is EJS, see ejs.co for more info on how to use this engine
+    - simply load html views in a views directory with the res.render method once Node has set a view engine
+    - res.render can accept an object of key, value pairs that will store variables which can be used in the EJS templating logic in your view files
+    - some templating engines support the notion of layouts which help combine different views and templates for reuse
+    - see the expressapp directory for sample views and example EJS usage
+
+5. Querystring and Post Parameters
+    - example query string data GET: /?id=4&page=3 HTTP/1.1, Host: www.learnwebdev.net, Cookie: username=abc;name=Tony
+    - example query string data POST: HTTP/1.1, Host: www.learnwebdev.net, Content-Type: application/x-www-orm-urlencoded, Cookie: num=4;page=2, username=Tony&password=pwd
+    - can also send JSON data from the browser to the server with tools like jQuery
+    - use req.query object in express to retrieve query strings parameters
+    - express doesn't have a way to parse the body of a request natively, use thrid party middleware like body-parser
+    - you can pass the middleware, like a url encoded parser to app.post method to be performed before handling the request and generating your response
+    - body-parser also offers utilites for parsing JSON from a request and making it available in the req.body
+    - see index.js and index.ejs template in src/expressapp for query string and post examples
+
+6. RESTful APIs and JSON
+    - REST: an architectural style for building APIs, stands for 'representational state transfer', HTTP verbs and URLs mean somethings
+    - help developers using your API reason about what certain URLs do and what services are offered/performed with the coupling of url name and http verb (put, post, get, delete)
+    - see index.js and apiController.js in controllers directory for some REST API examples, express make developing RESTful APIs straight forward
+
+7. Structuring an App
+    - express is an unopiniated minimalistic framework so we can choose to use npm packages that help us structure express apps certain ways
+    - example npm package used here for app structure is express-generator (globally installed)
+    - express-generator attaches routing middleware with its own local modules to handle different routes (users, routes)
+    - to forward paths to be used as middleware use routers and then the local module router can be passed to app.use with some route
+    - seperate code into modules and use express and Node features to help keep apps strucuted and easy to navigate, there are many ways to do so, be pragmatic
+    - see index.js and controllers directory for modularizing routes example, see generatedApp directory for example express-generator app
+
+JavaScript, JSON, and Databases
+-------------------------------
+
+1. Relational Databases and SQL
     - 
+
 
 
 

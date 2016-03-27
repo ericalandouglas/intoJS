@@ -45,7 +45,7 @@ http.createServer(function (req, res) {
     processHtmlRequestStream(res);
   } else if (req.url === '/api') { // JSON example
     processJsonRequest(res);
-  } else if (req.url === '/moment') { // default index route
+  } else if (req.url === '/moment') {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end(moment().format('ddd hA')); // use the moment npm package
   } else { // all other requests funnel into here
