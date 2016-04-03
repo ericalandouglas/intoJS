@@ -516,6 +516,65 @@ JavaScript, JSON, and Databases
 -------------------------------
 
 1. Relational Databases and SQL
+    - relational implies tables with columns/fields and rows of data
+    - relational databases use schemas to not repeat ourselves, use ids to link tables and data
+    - normalized data is data that doesn't repeat itself, structure data to save space and be able to ask interesting questions with SQL
+    - think of a table as an array in JavaScript and each element is an object representing a row in the relational table
+
+2. Node and MySQL
+    - npm has many packages that offer support to work with mysql databases
+    - for these examples using mysql npm package, currently the most popular
+    - mysql connection queries return database rows as JavaScript objects with key-value fields for each column in the table queried
+
+3. NoSQL and Documents
+    - NoSQL: a variety of technologies that are alternatives to tables and SQL
+    - one type of NoSQL database/store is a document database, MongoDB being one of them
+    - a document is basically a record of an array of Javascript objects, while reptitive the memory issues are less of a concern in modern day
+    - MongoDB makes it easy to store JSON and change certain records on the fly, makes updates cheap
+
+4. MongoDB and Mongoose
+    - visit mongodb.com for more info on MongoDB and installation help
+    - can use mongolab to help host mongodb databases in the cloud, has a web portal for viewing documents in the database as well as query
+    - mongoose is an npm package that helps interface with a MonogDB database
+    - it is required to define a schema in mongoose for the certain types of records you want to use, and then a mongoose model
+    - when working with NoSQL documents the data may not be uniform and be changed on the fly, still fairly easily to graba nd work with data in documents
+    - see index.js in src/expressApp directory for example of using mongoose (potentially as middleware)
+
+5. Web Server Checklist
+    - we have now seen Node communicate with web servers completing all items on the checklist
+    - Node is a reliable and robust http/https web server
+
+The MEAN Stack
+--------------
+
+1. MongoDB, Express, AngularJS, NodeJS
+    - Stack (tech stack): the combination of all thechnologies used to build a piece of software
+    - technologies in the stack include your database system, server side code, client side code, everything else
+    - MongoDB stores data in documents that look like JSON and JS object literal notation
+    - Express is the JS framework that makes things like routing, writing APIs, and wokring with HTTP easier
+    - AngularJS is a JS framework for managing code and UI in the browser, removing a lot of manual work
+    - NodeJS is JS on the server, handles HTTP requests and responses, including lots more
+    - all these technoliges incorporate JavaScript/JSON data, popular combination
+
+2. AngularJS: Managing the Client
+    - browsers are written in C++, in general these have JavaScript engines embedded in them, and give access to additonal features
+    - DOM: structure browers use to store and manage web pages, stands for 'Document Object Model', browsers allow JS to manipulate the DOM
+    - DOM doesn't live in JS, it lives in the browsers, when JS changes the DOM as enabled by the broswer's engine the engine rerenders the DOM
+    - HTML and the DOM is structured in a tree like fashion, JS can add, change, remove elements as needed and the engine updates the DOM
+    - you have to make sure JS code you write can be properly converted in all browsers, as each may have a unique engine with its own features
+    - frameworks like AngularJS help us structure code to manipulate the DOM while avoiding cross browser problems
+    - Angular is usually Angular 1, Angular 2 is still fairly new
+    - see the angularApp directory for a sample Angular app
+    - you can use angular in your views with a simple script link fetched from angularjs.org, the browser engine fetches the Angular source for you to use in these views
+    - you pass Angular controllers and bind them to various HTML elements to use their values and functionality in the DOM
+
+3. Angular, Angular 2, React, and more...
+    - angular and react are front end frameworks and run code on the client side browser to manipulate the DOM
+    - all these front end frameworks are just JS, still all just JS running on the client's browser
+    - free to choose any framework as long as it is in JS, react, angular, ember, no framework, etc.
+
+4. Working with The Full Stack
+    - Full Stack Developer: a developer who knows all the pieces of a software stack, can build software (web apps) by themselves
     - 
 
 

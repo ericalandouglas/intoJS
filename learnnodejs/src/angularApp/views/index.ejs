@@ -1,0 +1,23 @@
+<html ng-app="TestApp"> <!-- ng-app is an attribute and an Angular directive -->
+    <head>
+        <title>The MEAN stack</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.js"></script>
+    </head>
+    <body ng-controller="MainController as vm"> <!-- Angular allows controlers to be used inside elements -->
+
+        <input type="text"  ng-model="vm.message" /> <!-- bind vm.message value to this input for more dynamic behaviour -->
+        <br />
+        {{ vm.message }} <!-- angular will manipulate the DOM and fill this value in for us -->
+
+        <ul>
+            <li ng-repeat="person in vm.people"> <!-- loop over people array bound to the controller -->
+                {{ person.name }}
+            </li>
+        </ul>
+
+        <script>
+          var clientPeople = <%- JSON.stringify(serverPeople) %>; // ejs and Node process this into client side code
+        </script>
+        <script src="/assets/js/app.js"></script> <!-- this tells node to request our custom script -->
+    </body>
+</html>
