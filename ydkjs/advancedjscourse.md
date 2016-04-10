@@ -34,5 +34,10 @@ Object Orienting
 
 Async Patterns
 --------------
-
+- attempt to make asynchronous code look synchronous
+- implicit trust issues with callbacks as a continuation style (trusting that success and fail aren't both called in the same context, etc.)
+- generators: new type of funciton that can pause in along the way of its computations
+- generator functions execute until a yield statement is hit when called and then relinquishes control
+- generator is exhausted when no more yield statements are hit and the function runs all code
+- 
 

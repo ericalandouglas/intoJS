@@ -575,6 +575,12 @@ The MEAN Stack
 
 4. Working with The Full Stack
     - Full Stack Developer: a developer who knows all the pieces of a software stack, can build software (web apps) by themselves
+    - it is important to understand how data flows from the server (Node engine) to the client's browser (perhaps getting processed by JS on client side)
+
+Build an App
+------------
+
+1. NodeTodo: Software Requirements
     - 
 
 

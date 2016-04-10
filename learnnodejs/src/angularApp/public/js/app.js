@@ -1,3 +1,4 @@
+// this code will be run on the client side in the browser and not by Node
 
 var app = angular.module('TestApp', []);
 
