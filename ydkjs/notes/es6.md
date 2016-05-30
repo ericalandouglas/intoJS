@@ -65,5 +65,20 @@ Ch. 2
     - 
 
 
+Overview of features
+--------------------
+- let & const block scoped
+- ... spread (function application) and rest operator (function definition)
+- template strings with `${ }`
+- default parameters (not just function parameters)
+- array and object destrcuturing assignment
+- fat arrow lexically scoped functions
+- classes with get and set, inheritance, static methods
+- function names can be dynamic and derived at run time
+- modules including default and named exports
+- built in support for async/promises
+- iterators with for...of (next protocol satisfied)
+- generators with function* and yield (subtype of iterator)
+- full list: https://github.com/lukehoban/es6features
 
 
