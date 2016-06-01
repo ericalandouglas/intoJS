@@ -335,7 +335,78 @@ Intermediate Redux: Middleware
 ------------------------------
 
 1. App Overview and Planning
+    - will create an app to 1. solidify knowledge of React 2. Get more experience with Redux 3. Start making async calls in our apps
+    - the app will be a weather forecast browser, it includes views for searching cites
+    - the search will make an ajax request query for the cities 5 day forecast
+    - there will be a table view that will render each queried city's 5 day forecasts as they are returned asynchronously
+    - the table columns include city name, and 3 columns for temperature, pressure, humidty as 5 day forecast plots
+    - we need to make sure we can handle state changing a lot (gathering) over time and keep it centralized in the redux state object
+
+2. Component Setup
+    - the weather app will contain 4 views, 1. the overall application view 2. a search bar view 3. a forecast list view which knows how to render each line item 4. a forecasst chart view
+    - we will be taking advantage of reusable components with our chart component as there will be many present in the forecast list view
+    - the search bar needs to be able to dispatch an action creator (a search API query) that can flow through the app's reducers and thus will need to be a container
+
+3. Controlled Components and Binding Context
+    - a controlled field is a form element where the value of the input is set by the state of our component
+    - the search input in the search bar view will be a controlled component
+    - remember when referring to this.state in React components that is simply referencing the component level state and not the app's state held in a redux object
+    - to initialize component level state in a React component class we must use the constructor function
+    - the two component properties required to create a controlled component are the value and onChange properties
+    - when a callback function is handed off as a parameter to be used, like an event handler on a form input change, the this context is not passed along to the event handler from the form input component, an explicit binding of the this context is needed on the callback
+    - we can explicitily bind event handler methods we create in our class components in the class's constructor i.e. this.onInputChange = this.onInputChange.bind(this) where this.onInputChange itself is just an unbounded event handler callback function
+    - remember it is usually always necessary to bind the parent this context to callbacks you use (when they reference this)
+
+4. Form Elements in React
+    - we created a form element to house our search bar view, when hitting enter or pressing a submit button in a child element on a form, the browser submits the for contents
+    - an HTML post request is made to a server with the form data upon submitting and the page is reloaded, all browsers handle this HTML element this way (not a React behaviour)
+    - to prevent the browser from automatically making the request and reloading the page, override the HTML form's onSubmit property with your own function, being sure to call event.preventDefault()
+    - we decide to use a form over a simple div even though we're preventing the default form behaviour because we get nice functionality baked into the component
+    - in a form a user can expect to submit content when hitting enter or a button (we don't need to write our own special event handlers that observe what button/key a user is pressing)
+
+5. Working with API's
+    - we will be using the open weather map API to fetch five-day forecast data which requires a sign up and personal API key
+    - we will be consuming a json object that contains a list of objects, each representing a reading spaced three hours apart
+
+6. Intoduction to Middleware
+    - making Ajax requests in React has a certain form and falls in a specific spot in the lifecycle of a React action
+    - middleware shows up right after the action creator returns an action before the action flows through all reducers
+    - middleware functions can be used to inspect, manipulate, log, stop, etc. any incoming action
+    - use the redux-promise npm package to help make Ajax requests in your React app
+    - it is necessary to hook up the redux-promise middleware with the applyMiddleware function from redux
+
+7. Ajax Requests with Axios
+    - it is wise to create consts (single source of truth) for your action types (exporting them out of your action modules) so the string values can be kept consistent between action creators and the reducers they flow in which act on the action.type
+    - template strings help keep code clean and easy to read and can be used to create the URL string
+    - for the weather forecasting app the city will be dynamic but the country will be static with a value of 'us'
+    - the npm package axios can be used to help make Ajax requests and deal with promises (jQuery functionality is a bit overkill)
+    - the axios promise request can then be passed to the action object as a payload, it will be handled properly with the help of redux-promise middleware
+
+8. Redux Promise in Practice
+    - we now want to wire up the for submittal in our weather app to trigger an Ajax request action and fetch the five-day forecast data
+    - it is necessary to connect the SearchBar React component (making it a container) to the Redux state object (to gain access to our Ajax request action)
+    - the SearchBar container will use the connect function coupled with bindActionCreators/mapDispatchToProps to get access to the fetchWeather action creator (note SearchBar view does not care about any state on the actual Redux state object)
+
+9. Redux-Promise Continued
+    - remember we return a request promise as the action payload in the fetchWeather action creator
+    - the middleware actually allows the promise to resolve and contain the data (the request's reponse) we care about
+    - with the response object now resolved, the action payload now contains the response object to be consumed by the reducers
+    - the redux-promise middleware sees the incoming action object and its promise payload, it stops the action, allows the request to resolve, unwraps it and dispatches a new action obect with payload set as the resolved response
+    - middleware here allows us to not have to worry about handling promises in our reducers, only the resolved payloads (what we want anyways)
+    - redux-promise observes the action bject's payload type and if it is a promise it stops the action, after the resolution it creates a new action to dispatch to all reducers
+    - if the action object doesn't contain a promise payload the action is let through and not stopped by redux-promise middleware
+    - middleware allows us to write code that is easy to understand i.e. can abstract away async nature keeping code looking synchronous
+
+10. Adding State Mutations in Reducers
+    - once redux-promise middleware has helped us resolve an action object for our reducers we now only care about action.payload.data
+    - in the weather app our weather reducer will want to contain a list of the forecasts we retrieve (initial state is empy list)
+    - in React we never want to explicitilly set a component's state equal to something i.e. this.state = {...}
+    - like React, in Redux we NEVER manipulate state directly, we must use return a fresh value for state i.e. don't do state.push(...) for weather forecast list
+    - when building lists in Redux state and reducers remember to use concat or the ES6 spread operator ... as that creates a fresh list and does not mutate any list
+
+11. Building a List Container
     - 
+
 
 
 

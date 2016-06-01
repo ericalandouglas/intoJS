@@ -15,7 +15,7 @@ class SearchBar extends Component { // inherit via [[Prototype]] from React.Comp
       <div className="search-bar">
         <input
           value={this.state.term}
-          onChange={event => this.onInputChange(event.target.value)}
+          onChange={event => this.onInputChange(event.target.value)} // fat arrow ES6 syntax implicitly passes along the this context for us to the event handler callback
         />
         <br/>
         Value of the input: {this.state.term}
