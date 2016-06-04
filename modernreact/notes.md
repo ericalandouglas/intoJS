@@ -405,6 +405,65 @@ Intermediate Redux: Middleware
     - when building lists in Redux state and reducers remember to use concat or the ES6 spread operator ... as that creates a fresh list and does not mutate any list
 
 11. Building a List Container
+    - we now need a new component to render the list of weather forecast for the cities we query
+    - the component needs access to the redux state object containing the list of forecasts and so needs to be a container
+    - remember ES6 syntax for unpacking objects in params i.e. ({ weather }) => { ... } unpacks weather property from object param
+    - remember ES6 synatx shorthand for creating objects when property key and var value share name i.e. { weather } = { weather: weather }
+
+12. Mapping Props to a Render Helper
+    - remember the structure of the API data: contains a city object with city data and a list of weather readings
+    - our redux state object contains a weather property that is a list containing the API data objects from our city queries
+    - to build the rows in our table body we need to map over the city weather readings list, we'll get one city per row
+    - when rendering React lists it is necessaryh to give each list component a unique key using the key property
+
+13. Rendering Sparkline Charts
+    - each column representing a piece of weather data will be a chart
+    - we will employ the package react-sparklines to help us render the charts
+    - the package lets us use a SparkLines component which is passed a list of data and options for sizing/styling
+    - can use a SparkLinesLine child element to color the graph
+    - we need to create 3 lists from the lsit of weather readings for each city, one for temp, pressure, and humidity
+    - can use ES6 shorthand syntax for mapping functions i.e. weather => weather.main.temp
+
+14. Making a Reusable Chart Component
+    - when you want to replicate some piece of markup in your react components its probably time to pull out the markup into a reusable component
+    - the reusable chart component will always be passed the data it needs from its parent and it won't need to know about redux state
+    - the chart component simply ingests a list parameter and renders the data without mutating so it only needs to be a functional component, no need to track any state
+    - get used to creating reusable components, whether they're functional, class based, or container
+
+15. Labeling of Units
+    - we want to provide useful info in the weather charts like provide a line and value for the average of the 5 days
+    - the units of data may not be obvious to the user so we need to add headers for units
+    - can also pass a units property to the child chart column component
+
+16. Google Maps Integration
+    - can add your own custom styling in the styles/style.css file
+    - we're now interested in adding a tiny google maps window placed in the name column for the city's row
+    - to help integrate google maps we will use a package called 'react-google-maps'
+    - this package will help us make a react component that is wrapper around a google map
+    - to create a google map react component we need to use he GoogleMapLoader and GoogleMap components from the library
+    - we will center the google map on the coordinates the API returns for a city we query
+    - the google map component we create will be a seperate reusable functional component, don't care about state in the component
+    - specify specific package versions when npm installing like so: npm install <package>@X.X.X (X >= 0)
+    - we'll lock to a specific version of the react google maps api to be sure api changes to google maps doesn't effect our app later
+    - we directly pass a style object in CSS syntax to our container element
+
+17. Google Maps Integration Continued
+    - we use object destructuring syntax from ES6 to grab lat and lon i.e. const { lon, lat } = cityData.city.coord;
+
+18. Project Review
+    - our action creator in this weather app used a constant for type to mitigate typos
+    - we also used redux-rpomise to handle a promise received by axios (making the Ajax request)
+    - the middleware automatically stops the action and lets the promise resolve, once resolved it sends the now ready data to our reducers
+    - the middeware here helps us abstract away async code
+    - reducers always strive to never mutate current state it was passed, we alwasy return a new object to take place of current state
+    - we reviewed how to destructure an array in ES6 syntax
+    - we also employed third-party libraries with pre built react components to make our app that much more lively (charts and maps)
+    - we also build reusable components when we want to better organize our components and abstractions, especially when working with third party packages
+
+React Router + Redux Form
+-------------------------
+
+1. App Overview and Goals
     - 
 
 
