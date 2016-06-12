@@ -22,8 +22,8 @@ class WeatherList extends Component {
       { readings: allReadings[1], color: 'blue', units: 'hPa' }, // pressures
       { readings: allReadings[2], color: 'green', units: '%' } // humidities
     ];
-    const chartColumns = R.map(props =>
-      <ChartColumn data={props.readings} color={props.color} key={props.units} units={props.units} />
+    const chartColumns = R.map(({ readings, color, units }) => // ES6 object destructuring syntax
+      <ChartColumn data={readings} color={color} key={color} units={units} />
     )(propsList);
 
     return (
