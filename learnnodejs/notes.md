@@ -581,8 +581,47 @@ Build an App
 ------------
 
 1. NodeTodo: Software Requirements
-    - 
+    - the app will be a to do list, a CRUD app that can serve as an example for some of the core things web apps do
+    - a user should be able to add, edit, and delete to do lists
+    - each to do list should be able to be marked as complete
+    - each to do list can have one optional file attachment
+    - one person can not access the to do lists of another person (authentication)
+    - we should be willing to explore the npm ecosystem for packages they will help us meet our needs as defined above to help streamline development
 
+2. Initial Setup
+    - start with npm init in an empty directory to begin
+    - we will grab the express package to help build routes quickly, and the ejs package to help with templating
+    - we will use the package body-parser to help submit JSON data
+    - we will use the mongoose npm package to easily interact with mongodb
+
+3. Setting up Mongo and Mongoose
+    - we will use mlab to host a free instance of mongo for us in the cloud
+    - mongoose will help us define our schema and interact with this mongo database and perform CRUD operations
+    - we will use a config directory to help store things like the mongo connection url and help us cahnge between dev, prod, etc. envs
+    - you should never store usernames and passwords as plain text in these config files for security reasons
+    - we will place the db connection in the app.js file but this could be done somewhere else
+    - mongo connections stay open once you instantiate them as they are single connections
+
+4. Adding Seed Data
+    - Seed: add initial data to a database (seed a database)
+    - seeding the database with dummy data makes it easy to rapidly develop (schemas, local envs, etc) 
+    - there are tools available to help generate initial fake data, especially when you want to generate a lot of data
+    - one helpful tool for creating seed data is http://beta.json-generator.com
+    - it is helpful to build a setup controller for your express app and create RESTful resources to seed databases, etc
+    - can add checks when running the seed db route to make sure you don't seed twice, pass an env var etc.
+
+5. Creating our API
+    - we will use the body-parser package to add help json and url encoding middleware to our api routes
+    - we will provide the usual CRUD routes for our todo lists
+
+6. Testing our API
+    - dev dependencies and regular dependencies both get installed to the node_modules directory
+    - we will use the chrome postman app to help us test and develop on our API
+    - our post route looks at the request body property to find data about the todo post
+    - the delete route expects an id found on the body property for the request
+    - when sending JSON data in postman it automatically adds the content-type header property for us
+    - we have built a web API not a web app, were free to choose web, mobile, IoT, etc. apps which access our data via the API we created
+    - 
 
 
 
