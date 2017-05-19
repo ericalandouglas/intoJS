@@ -106,9 +106,79 @@ Testing
     - make sure to rerun npm run test:watch when adding new components and specs about those components to your test report
 
 15. Expectations on Consent
+    - we want our comment list to show comments in <li> components and we want all the comments in our list to be rendered in the view
+    - our CommentList component will be a container that is hooked up to our redux state tree, it will receive the list of comments as props
+    - we need a way to push comment lists into our CommentList container when testing, the renderComponent function can receive props to push to our components
+    - the renderComponent function can take a third argument that is an object containing our desired props
+
+16. Assertions with Lists
+    - we will turn our CommentLisrt component into a container, a react component that has access to a piece of the redux state tree
+    - containers are hooked up via react-redux's connect function, the function takes a mapStateToProps function parameter to map redux state accordingly into the component's props
+
+17. Testing Action Creators
+    - we will now use redux to save comments via an action creator and have a reducer collecting the comments and feeding the updated comment list to our CommentList container
+    - we will write our specs first for our comment action creator and then implement the action creator to mimic test driven development
+    - we will be particular with our action creator tests and ensure they have the correct type and payload
+    - we will save our action types into a file called types.js in the src/actions directory
+
+18. Action Creator Shortcuts
+    - our saveComment action creator will have a comment for its payload and the SAVE_COMMENT type we defined in actions/types.js
+    - our CommentBox component will need to be a container so that it can make use of our saveComment action creator via the connect funciton
+    - we will pass the connect function an object containing our action creators as the second parameter to inject our action creators into our component's props
+    - can use the syntax import * as <MY_OBJECT> from '<MY_MODULE.JS>'; to load all exported members from a module into a single object
+    - the above is nice to create a single object holding all your action cretors easily, to be passed to connect function
+    - we will use the available action creator saveComment injected onto props in our handleSubmit function to fire a save comment action before clearing the box's input
+
+19. TDD Comments Reducer
+    - we want to test our reducers by passing them an action we know they won't respond to so we can ensure proper default behavior and initial state
+    - we will also test our reducers with each action they care about whether its one or many
+    - the chai library provides some very low level and default assertions we can use
+    - remember, reducers consume actions (objects witha  type and payload property) and return a new piece for our redux state tree, reducers consume all actions and always return a new piece of state (no mutations)
+
+20. Spec Failure After Code Change
+    - there may be instances where you're passing specs fail after some refactor or new implementation, in this case adjust your test case accordingly
+
+21. App Review
+    - be sure to hook up your reducers in the combineReducers call of the reducers/index.js file
+
+Test Environment Setup
+----------------------
+
+1. Purpose of Mocha and Chai
+    - the expect keyword comes from the chai library
+    - the needs of a testing suite include two things:
+      1. we need something to run the tests (load tests, run on by one, clean up, reporting)
+      2. we need something to something to write tests (helpers to assert properties about test subjects)
+    - mocha helps us accomplish number 1 above and will run our tests, we don't really directly interact with mocha
+    - chai provides the a lot of helpful assertions to cover number 2 above, chai api docs available at http://chaijs.com/api/
+    - we loaded other libraries to augment chai and the available matchers as well in our test suite like chai-jquery
+
+2. Test Helper From Scratch
+    - we will completely rewrite test_helper.js
+    - the test helper was doing four useful things for us, these include:
+      1. Set up testing environment to run like a browser in the command line
+      2. Build "renderComponent" helper that will render a given React component
+      3. Build helper for simulating events
+      4. Set up chai-jquery
+    - we will deep dive into each of these four pieces and implement them ourselves so we can later add our own tweaks as necessary
+
+3. JSDom Setup
+    - we will set up our testing environment to run like a browser in the command line
+    - all of the code we write gets put into a file called bundle.js which will be sent to the browser for app rendering
+    - bundle.js includes libraries like react, redux, but not libraries like mocha or chai
+    - when we write our specs/test we did not have to interact with a borwser, all work was done in the terminal
+    - terminal does not include html elements, the DOM, etc. like a browser does
+    - we will use a library to help emulate a DOM and HTML standards called jsdom
+    - we will set up a document in our testHelper.js file to serve as the HMTL view, assigned on global (acts as window)
+    - jquery will make use of the fake document and window variables created on the global object
+
+4. More JSDom Setup
+    - we will import _$ from jquery to tell jquery to use our window
+    - we will call _$ passing our window to create a full fledged instance of jquery
+    - we have now setup our command line to act like a browser to run our testing suite appropriately
+
+5. TestUtils Library
     - 
-
-
 
 
 

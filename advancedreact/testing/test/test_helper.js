@@ -1,36 +1,18 @@
-import _$ from 'jquery';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import TestUtils from 'react-addons-test-utils';
+
 import jsdom from 'jsdom';
-import chai, { expect } from 'chai';
-import chaiJquery from 'chai-jquery';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import reducers from '../src/reducers';
+import _$ from 'jquery'; // make use of this window here with _
 
+// set up testing environment to run like browser in the command line
+
+// create an HTML DOM object (fake browser) on the global object
 global.document = jsdom.jsdom('<!doctype html><html><body></body></html>');
+// create a fake window object on the global object
 global.window = global.document.defaultView;
-global.navigator = global.window.navigator;
-const $ = _$(window);
+// create our own instance of a jquery variable using our window
+const $ = _$(global.window);
 
-chaiJquery(chai, chai.util, $);
+// build 'renderComponent'helper that should render a given eact class
 
-function renderComponent(ComponentClass, props = {}, state = {}) {
-  const componentInstance =  TestUtils.renderIntoDocument(
-    <Provider store={createStore(reducers, state)}>
-      <ComponentClass {...props} />
-    </Provider>
-  );
 
-  return $(ReactDOM.findDOMNode(componentInstance));
-}
 
-$.fn.simulate = function(eventName, value) {
-  if (value) {
-    this.val(value);
-  }
-  TestUtils.Simulate[eventName](this[0]);
-};
 
-export {renderComponent, expect};
