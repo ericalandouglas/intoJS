@@ -9,7 +9,7 @@ const mutations = {
     const st = stateParam;
     st.stocks = newStocks;
   },
-  // eslint-disable-next-line
+
   RND_STOCKS(stateParam) {
     const st = stateParam;
     st.stocks.forEach((stockParam) => {
@@ -17,14 +17,26 @@ const mutations = {
       s.price = Math.round(s.price * (1 + Math.random() + -0.5));
     });
   },
+
+  ADD_STOCK(stateParam, { name, price }) {
+    const st = stateParam;
+    function reduceHelper(z, { id }) {
+      return z > id ? z : id;
+    }
+    const maxId = st.stocks.reduce(reduceHelper, 0);
+    st.stocks.push({ name, price, id: maxId + 1 });
+  },
 };
 
 const actions = {
-  initStocks: ({ commit }) => {
+  initStocks({ commit }) {
     commit('SET_STOCKS', stocks);
   },
-  randomizeStocks: ({ commit }) => {
+  randomizeStocks({ commit }) {
     commit('RND_STOCKS');
+  },
+  addStock({ commit }, stock) {
+    commit('ADD_STOCK', stock);
   },
 };
 
