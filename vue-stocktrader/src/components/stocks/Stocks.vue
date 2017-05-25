@@ -1,6 +1,10 @@
 <template>
   <div>
+    <div class="page-header" v-if="empty">
+      <h5 class="text-center">No stocks loaded</h5>
+    </div>
     <Stock v-for="stock in stocks"
+           v-else
            :stock="stock"
            :key="stock.id" />
     <StockForm />
@@ -22,6 +26,10 @@
       ...mapGetters([
         'stocks',
       ]),
+
+      empty() {
+        return this.stocks.length === 0;
+      },
     },
   };
 </script>

@@ -1,3 +1,5 @@
+import Vue from 'vue';
+
 const state = {
   funds: 10000,
   stocks: [],
@@ -33,12 +35,26 @@ const mutations = {
   },
 };
 
+const loadStocksPortfolio = ({ commit }) => {
+  Vue.http.get('data.json')
+    .then(r => r.json())
+    .then((data) => {
+      if (data) {
+        const { funds, stocksPortfolio } = data;
+        commit('SET_PORTFOLIO', { funds, stocksPortfolio });
+      }
+    });
+};
+
 const actions = {
   buyStock({ commit }, order) {
     commit('BUY_STOCK', order);
   },
   sellStock({ commit }, order) {
     commit('SELL_STOCK', order);
+  },
+  loadPortfolio(c) {
+    loadStocksPortfolio(c);
   },
 };
 

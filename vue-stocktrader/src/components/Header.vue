@@ -24,8 +24,8 @@
              aria-expanded="false">Save & Load <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="#" @click="save">Save Data</a></li>
-            <li><a href="#" @click="load">Load Data</a></li>
+            <li><a href="#" @click="savePortfolio">Save Data</a></li>
+            <li><a href="#" @click="loadPortfolio">Load Data</a></li>
           </ul>
         </li>
       </ul>
@@ -56,25 +56,24 @@
     methods: {
       ...mapActions([
         'randomizeStocks',
-        'loadData',
+        'loadPortfolio',
       ]),
 
       endDay() {
         this.randomizeStocks();
       },
 
-      save() {
-        const { funds, stocks, stocksPortfolio } = this;
+      savePortfolio() {
+        const { funds, stocksPortfolio } = this;
         const data = {
           funds,
-          stocks,
           stocksPortfolio,
         };
         this.$http.put('data.json', data);
       },
 
-      load() {
-        this.loadData();
+      loadStocksPortfolio() {
+        this.loadPortfolio();
       },
     },
   };
